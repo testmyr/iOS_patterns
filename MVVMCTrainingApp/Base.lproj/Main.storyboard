@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -15,37 +15,108 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="MVVMCTrainingApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="PuE-E7-HrK">
+                                <rect key="frame" x="0.0" y="722" width="375" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="PuE-E7-HrK" secondAttribute="bottom" id="KU3-IX-M8o"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="PuE-E7-HrK" secondAttribute="trailing" id="P2X-pg-Ze4"/>
+                            <constraint firstItem="PuE-E7-HrK" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="v3V-xB-xaf"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-713" y="143"/>
+            <point key="canvasLocation" x="-711" y="71"/>
         </scene>
-        <!--View Controller-->
+        <!--General View Controller-->
         <scene sceneID="rgi-29-t21">
             <objects>
-                <viewController id="Odh-hr-umf" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GeneralViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Odh-hr-umf" customClass="GeneralViewController" customModule="MVVMCTrainingApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Mqt-gK-nD2">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="OB2-Wl-vbd">
+                                <rect key="frame" x="0.0" y="24" width="375" height="698"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="popularMovieCell" rowHeight="90" id="xJv-oK-gos" customClass="GeneralViewCell" customModule="MVVMCTrainingApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="90"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="xJv-oK-gos" id="p9e-26-0LK">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="89.666666666666671"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NtJ-DS-U5m">
+                                                    <rect key="frame" x="0.0" y="0.0" width="143.33333333333334" height="89.666666666666671"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="NtJ-DS-U5m" secondAttribute="height" multiplier="1.6" priority="900" id="2Vc-wj-rBi"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2FG-87-ih3">
+                                                    <rect key="frame" x="143.33333333333337" y="36.333333333333336" width="231.66666666666663" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="2FG-87-ih3" firstAttribute="centerY" secondItem="p9e-26-0LK" secondAttribute="centerY" id="Cja-dM-ET1"/>
+                                                <constraint firstItem="NtJ-DS-U5m" firstAttribute="width" relation="lessThanOrEqual" secondItem="p9e-26-0LK" secondAttribute="width" multiplier="0.4" id="HZe-Sr-iXx"/>
+                                                <constraint firstAttribute="trailing" secondItem="2FG-87-ih3" secondAttribute="trailing" id="Lho-a0-sE2"/>
+                                                <constraint firstItem="2FG-87-ih3" firstAttribute="leading" secondItem="NtJ-DS-U5m" secondAttribute="trailing" id="hHl-S2-Oxu"/>
+                                                <constraint firstItem="NtJ-DS-U5m" firstAttribute="top" secondItem="p9e-26-0LK" secondAttribute="top" id="mM0-rk-Zo8"/>
+                                                <constraint firstAttribute="bottom" secondItem="NtJ-DS-U5m" secondAttribute="bottom" id="rKK-US-mwy"/>
+                                                <constraint firstItem="NtJ-DS-U5m" firstAttribute="leading" secondItem="p9e-26-0LK" secondAttribute="leading" id="t4X-J6-oZi"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="imgMoviePoster" destination="NtJ-DS-U5m" id="9Yc-tE-xQe"/>
+                                            <outlet property="lblMovieName" destination="2FG-87-ih3" id="30A-Jv-pDm"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="epd-0E-A3E">
+                                <rect key="frame" x="0.0" y="722" width="375" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="M5L-1A-D77" firstAttribute="bottom" secondItem="epd-0E-A3E" secondAttribute="bottom" id="0gm-s6-Zme"/>
+                            <constraint firstItem="epd-0E-A3E" firstAttribute="leading" secondItem="M5L-1A-D77" secondAttribute="leading" id="Cye-rC-tyD"/>
+                            <constraint firstItem="M5L-1A-D77" firstAttribute="trailing" secondItem="epd-0E-A3E" secondAttribute="trailing" id="Fmj-2g-D1s"/>
+                            <constraint firstItem="M5L-1A-D77" firstAttribute="top" secondItem="OB2-Wl-vbd" secondAttribute="top" constant="20" id="HJj-zU-Mm5"/>
+                            <constraint firstItem="OB2-Wl-vbd" firstAttribute="leading" secondItem="M5L-1A-D77" secondAttribute="leading" id="HTY-yn-rIn"/>
+                            <constraint firstItem="epd-0E-A3E" firstAttribute="top" secondItem="OB2-Wl-vbd" secondAttribute="bottom" id="cqa-V1-mHl"/>
+                            <constraint firstItem="M5L-1A-D77" firstAttribute="trailing" secondItem="OB2-Wl-vbd" secondAttribute="trailing" id="oWa-CP-9vL"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="M5L-1A-D77"/>
                     </view>
+                    <connections>
+                        <outlet property="srchBar" destination="epd-0E-A3E" id="Ic4-ZD-fQP"/>
+                        <outlet property="tblPopularMovies" destination="OB2-Wl-vbd" id="RTJ-1v-dm5"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pbx-cn-xxI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="161" y="143"/>
+            <point key="canvasLocation" x="-15" y="71"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="98k-d6-hP9">
             <objects>
                 <viewController id="hXf-GD-Ttg" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="vMQ-1L-gSF">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="l8P-JP-e2h"/>
@@ -53,14 +124,14 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Y4v-X4-08O" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="820" y="144"/>
+            <point key="canvasLocation" x="703" y="71"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="skZ-us-nKP">
             <objects>
                 <viewController id="lJM-Pp-NKp" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="AuO-v5-wdb">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="og8-xh-fdH"/>

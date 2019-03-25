@@ -12,9 +12,13 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var appCoordinator: Coordinator!
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        window = UIWindow(frame: UIScreen.main.bounds)
+        appCoordinator = Coordinator(window: window)
+        appCoordinator.start()
 //        SimpleWebService.shared.getPopularMovies(forPage: 1) { (isSuccess, result) in
 //
 //        }
