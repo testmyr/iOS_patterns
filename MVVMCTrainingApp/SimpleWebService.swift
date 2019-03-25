@@ -11,6 +11,7 @@ import Foundation
 class SimpleWebService {
     private let apiKey = "aec8a424ccf89565e11d39fe96df8749"
     private let baseUrl = "https://api.themoviedb.org/3/movie/"
+    private let baseImageUrl = "https://image.tmdb.org/t/p/w500"
     private let urlSuffixPopularMovies = "popular"
     private let urlSuffixYoutubeLinkInfo = "videos"
     
@@ -60,6 +61,27 @@ class SimpleWebService {
             } catch let parsingError {
                 print("Error", parsingError)
             }
+        }
+        task.resume()
+    }
+    
+    func getPosterDataForImage(withName imagePathName: String, withAftermathClosure aftermathClosure: @escaping (Bool, Data?) -> Void) {
+        let imageUrl = URL(string: baseImageUrl + imagePathName)!
+        let task = URLSession.shared.dataTask(with: imageUrl) { (data, response, error) in
+            var success = false
+            defer {
+                if !success {
+                    aftermathClosure(false, nil)
+                }
+            }
+            guard let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
+                let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
+                let data = data, error == nil
+                else {
+                    return
+            }
+            success = true
+            aftermathClosure(true, data)
         }
         task.resume()
     }

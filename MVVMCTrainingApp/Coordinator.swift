@@ -16,15 +16,18 @@ class Coordinator {
     
     lazy var rootNavigationController: UINavigationController = {
         let popularMoviesVC: GeneralViewController = storyboard.instantiateViewController(withIdentifier: "GeneralViewController") as! GeneralViewController
-        popularMoviesVC.viewModel = popularMoviesModel
+        popularMoviesVC.viewModel = popularMoviesViewModel
         return UINavigationController(rootViewController: popularMoviesVC)
     }()
-    
-    var popularMoviesModel: GeneralViewModel {
+    lazy var popularMoviesViewModel: GeneralViewModel = {
         let viewModel = GeneralViewModel()
         viewModel.coordinatorDelegate = self
         return viewModel
-    }
+    }()
+    //var detailedVC: DetailedViewController?
+    
+    
+    
     
     init(window: UIWindow?) {
         self.window = window
@@ -40,7 +43,28 @@ class Coordinator {
 }
 
 extension Coordinator: GeneralViewModelCoordinatorDelegate {
-    func didSelectRow(_ row: Int, from controller: UIViewController) {
-    
+    func didSelectRow(_ row: Int) {
+        if let selectedMovie = popularMoviesViewModel.selectedMovie {
+            let detailedViewModel = DetailedViewModel(movieInfo: selectedMovie)
+            detailedViewModel.coordinatorDelegate = self
+            if let detailedVC = storyboard.instantiateViewController(withIdentifier: "DetailedViewController") as? DetailedViewController {
+                detailedVC.viewModel = detailedViewModel
+                detailedVC.title = "Movie Detail"
+                self.rootNavigationController.pushViewController(detailedVC, animated: true)
+            }
+        }
+        
+    }
+}
+
+extension Coordinator: DetailedViewModelViewDelegate {
+    func updateView() {
+        //detailedVC.updateView()
+    }
+}
+
+extension Coordinator: DetailedViewModelCoordinatorDelegate {
+    func playTrailerClicked() {
+        
     }
 }

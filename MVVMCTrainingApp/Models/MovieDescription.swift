@@ -23,21 +23,23 @@ struct MovieDescription {//sorry, no time for Codable. I've tried ))) :(
     var vote_count: Int
     var video: Bool
     var vote_average: Double
+    var backdropPathImageData: Data?
     
     init(_ dictionary: [String: Any]) {
-         posterPath = dictionary["poster_path"] as? String
-         adult = dictionary["adult"] as? Bool ?? false
-         overview = dictionary["overview"] as? String ?? ""
-         release_date = dictionary["release_date"] as? String ?? ""
-         genreIds = dictionary["genre_ids"] as? [Int] ?? []
-         id = dictionary["id"] as? Int ?? 0
-         originalTitle = dictionary["original_title"] as? String ?? ""
-         originalLanguage = dictionary["original_language"] as? String ?? ""
-         title = dictionary["title"] as? String ?? ""
-         backdrop_path = dictionary["backdrop_path"] as? String
-         popularity = dictionary["popularity"] as? Double ?? 0
-         vote_count = dictionary["vote_count"] as? Int ?? 0
-         video = dictionary["video"] as? Bool ?? false
-         vote_average = dictionary["vote_average"] as? Double ?? 0
+        posterPath = dictionary["poster_path"] as? String
+        adult = dictionary["adult"] as? Bool ?? false
+        overview = dictionary["overview"] as? String ?? ""
+        release_date = dictionary["release_date"] as? String ?? ""
+        genreIds = dictionary["genre_ids"] as? [Int] ?? []
+        id = dictionary["id"] as? Int ?? 0
+        originalTitle = dictionary["original_title"] as? String ?? ""
+        originalLanguage = dictionary["original_language"] as? String ?? ""
+        title = dictionary["title"] as? String ?? ""
+        backdrop_path = dictionary["backdrop_path"] as? String
+        popularity = dictionary["popularity"] as? Double ?? 0
+        vote_count = dictionary["vote_count"] as? Int ?? 0
+        video = dictionary["video"] as? Bool ?? false
+        vote_average = dictionary["vote_average"] as? Double ?? 0
+        backdropPathImageData = dictionary["backdropPathImageData"] as? Data
     }
 }

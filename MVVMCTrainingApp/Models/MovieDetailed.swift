@@ -12,6 +12,7 @@ struct MovieDetailed {
     var genres: [String]?
     var overview: String
     var releaseDate: String
+    var title: String
     
     init(_ dictionary: [String: Any]) {
         if let genresArray = dictionary["genres"] as? Array<Any> {
@@ -26,5 +27,6 @@ struct MovieDetailed {
         }
         overview = dictionary["overview"] as? String ?? ""
         releaseDate = dictionary["release_date"] as? String ?? ""
+        title = dictionary["title"] as? String ?? ""
     }
 }

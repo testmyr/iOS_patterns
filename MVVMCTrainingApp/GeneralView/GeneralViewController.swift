@@ -21,6 +21,7 @@ class GeneralViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        srchBar.delegate = self
         tblPopularMovies.delegate = self
         tblPopularMovies.dataSource = self
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -58,11 +59,34 @@ class GeneralViewController: UIViewController {
     }
 }
 
+extension GeneralViewController: UISearchBarDelegate {
+    
+//    //todo
+//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//        print("searchText \(searchBar.text)")
+//    }
+    
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if let searchText = searchBar.text, text.count > 3 {
+            viewModel.searchFor(text: searchText)
+        }
+    }
+}
+
 
 extension GeneralViewController: GeneralViewModelViewDelegate {
     func updateView() {
         if let tblVw = self.tblPopularMovies {
-            tblVw.reloadData()
+            DispatchQueue.main.async {
+                tblVw.reloadData()
+            }
+        }
+    }
+    func updateRow(rowIndex: Int) {
+        DispatchQueue.main.async {
+            let indexPath = IndexPath(item: rowIndex, section: 0)
+            self.tblPopularMovies.reloadRows(at: [indexPath], with: .fade)
         }
     }
     func showSpinner() {
@@ -89,11 +113,16 @@ extension GeneralViewController: UITableViewDataSource, UITableViewDelegate {
         if indexPath.row > viewModel.numberOfMovies() - 10 {
             viewModel.getNextPage()
         }
+        if let imgData = popularMovie.backdropPathImageData {
+            cell.imgMoviePoster.image = UIImage(data: imgData)
+        } else {            
+            cell.imgMoviePoster.image = nil
+        }
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewModel.didSelectRow(indexPath.row, from: self)
+        viewModel.didSelectRow(indexPath.row)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
