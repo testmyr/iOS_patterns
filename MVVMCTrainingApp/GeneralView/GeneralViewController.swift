@@ -47,6 +47,15 @@ class GeneralViewController: UIViewController {
             self.view.frame.origin.y = 0
         }
     }
+    
+    func showAlertWithMessage(message: String, cancelled: @escaping ()->Void){
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        let alertAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: {action in
+            cancelled()
+        })
+        alert.addAction(alertAction)
+        self.present(alert, animated: true, completion: nil)
+    }
 }
 
 
@@ -56,6 +65,16 @@ extension GeneralViewController: GeneralViewModelViewDelegate {
             tblVw.reloadData()
         }
     }
+    func showSpinner() {
+        LLSpinner.spin(style: .whiteLarge) {
+            self.showAlertWithMessage(message: "Be patient!", cancelled: {})
+        }
+    }
+
+    func hideSpinner() {
+        LLSpinner.stop()
+    }
+    
 }
 
 extension GeneralViewController: UITableViewDataSource, UITableViewDelegate {
@@ -67,6 +86,9 @@ extension GeneralViewController: UITableViewDataSource, UITableViewDelegate {
         let popularMovie = viewModel.movieFor(rowAtIndex: indexPath.row)
         let cell = tableView.dequeueReusableCell(withIdentifier: "popularMovieCell") as! GeneralViewCell
         cell.lblMovieName.text = popularMovie.title
+        if indexPath.row > viewModel.numberOfMovies() - 10 {
+            viewModel.getNextPage()
+        }
         return cell
     }
     

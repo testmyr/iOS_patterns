@@ -10,22 +10,24 @@ import Foundation
 import UIKit
 
 protocol GeneralViewModelProtocol {
-        
-        var viewDelegate: GeneralViewModelViewDelegate? { get set }
-        
-        func numberOfMovies() -> Int
-        
-        func movieFor(rowAtIndex index: Int) -> MovieDescription
+    var viewDelegate: GeneralViewModelViewDelegate? { get set }
     
-        func start()
-        
-        func searchFor(text: String)
-        
-        func didSelectRow(_ row: Int, from controller: UIViewController)
+    func numberOfMovies() -> Int
+    func movieFor(rowAtIndex index: Int) -> MovieDescription
+    func getNextPage()
+    
+    func start()
+    
+    func searchFor(text: String)
+    
+    func didSelectRow(_ row: Int, from controller: UIViewController)
 }
 
 protocol GeneralViewModelViewDelegate: AnyObject {
     func updateView()
+    //spinner better rewrite as setting state by using an enum
+    func showSpinner()
+    func hideSpinner()
 }
 
 protocol GeneralViewModelCoordinatorDelegate: AnyObject {
@@ -49,6 +51,18 @@ extension GeneralViewModel: GeneralViewModelProtocol {
     }
     func movieFor(rowAtIndex index: Int) -> MovieDescription {
         return movies[index]
+    }
+    func getNextPage() {
+        let duePageIndex = movies.count / 20 + 1
+        //no reason to use spinner because the loading fires with a margin
+        //self.viewDelegate?.showSpinner()
+        SimpleWebService.shared.getPopularMovies(forPage: duePageIndex) { (isSuccess, result) in
+            if isSuccess && result != nil {
+                self.movies.append(contentsOf: result!)
+                //self.viewDelegate?.hideSpinner()
+                self.viewDelegate?.updateView()
+            }
+        }
     }
     
     func start() {

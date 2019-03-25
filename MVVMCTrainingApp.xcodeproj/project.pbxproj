@@ -31,6 +31,8 @@
 		5AF2F25A2248A1D000AFD5B4 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF2F2582248A1D000AFD5B4 /* Coordinator.swift */; };
 		5AF2F25B2248A42700AFD5B4 /* GeneralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6EDADE22488CE100320A1B /* GeneralViewController.swift */; };
 		5AF2F25C2248B20B00AFD5B4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5ADE1FEB22484C4800D0775A /* Main.storyboard */; };
+		5AF2F25E2248C13A00AFD5B4 /* LLSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF2F25D2248C13A00AFD5B4 /* LLSpinner.swift */; };
+		5AF2F25F2248C13A00AFD5B4 /* LLSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF2F25D2248C13A00AFD5B4 /* LLSpinner.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +65,7 @@
 		5ADE20112248869500D0775A /* SimpleWebService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleWebService.swift; sourceTree = "<group>"; };
 		5ADE20122248869500D0775A /* MovieDescription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieDescription.swift; sourceTree = "<group>"; };
 		5AF2F2582248A1D000AFD5B4 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		5AF2F25D2248C13A00AFD5B4 /* LLSpinner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LLSpinner.swift; sourceTree = "<group>"; };
 		69CE9EED95005D924195A4AC /* Pods-MVVMCTrainingApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MVVMCTrainingApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MVVMCTrainingApp/Pods-MVVMCTrainingApp.debug.xcconfig"; sourceTree = "<group>"; };
 		A2306E671E0D3360AC818FC4 /* Pods_MVVMCTrainingApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MVVMCTrainingApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -126,6 +129,7 @@
 				5AF2F2582248A1D000AFD5B4 /* Coordinator.swift */,
 				5ADE1FE722484C4800D0775A /* AppDelegate.swift */,
 				5ADE1FE922484C4800D0775A /* ViewController.swift */,
+				5AF2F25D2248C13A00AFD5B4 /* LLSpinner.swift */,
 				5ADE1FEB22484C4800D0775A /* Main.storyboard */,
 				5ADE1FEE22484C5000D0775A /* Assets.xcassets */,
 				5ADE1FF022484C5000D0775A /* LaunchScreen.storyboard */,
@@ -331,6 +335,7 @@
 				5ADE1FE822484C4800D0775A /* AppDelegate.swift in Sources */,
 				5A6EDADD22488BE400320A1B /* GeneralViewModel.swift in Sources */,
 				5AF2F2592248A1D000AFD5B4 /* Coordinator.swift in Sources */,
+				5AF2F25E2248C13A00AFD5B4 /* LLSpinner.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -343,6 +348,7 @@
 				5A6EDAE122488CE800320A1B /* GeneralViewModel.swift in Sources */,
 				5AF2F25B2248A42700AFD5B4 /* GeneralViewController.swift in Sources */,
 				5A6EDAE322488F7000320A1B /* MovieDetailed.swift in Sources */,
+				5AF2F25F2248C13A00AFD5B4 /* LLSpinner.swift in Sources */,
 				5A6EDAE222488F6D00320A1B /* SimpleWebService.swift in Sources */,
 				5A6EDAEB22489CF300320A1B /* GeneralViewCell.swift in Sources */,
 				5AF2F25A2248A1D000AFD5B4 /* Coordinator.swift in Sources */,
