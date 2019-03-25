@@ -37,7 +37,7 @@ protocol GeneralViewModelCoordinatorDelegate: AnyObject {
 class GeneralViewModel {
     var isPageLoading = false
     var movies = [MovieDescription]()
-    var showedMovies = [MovieDescription]()
+    var showedMovies = [MovieDescription]()//filter; computed property
     weak var coordinatorDelegate: GeneralViewModelCoordinatorDelegate?
     weak var viewDelegate: GeneralViewModelViewDelegate?
     
@@ -53,11 +53,9 @@ class GeneralViewModel {
                 self.movies.append(contentsOf: result!)
                 self.viewDelegate?.updateView()
                 for index in self.movies.indices {
-                    //downloadGroup.enter()
                     if let imagePath = self.movies[index].backdrop_path {
                         SimpleWebService.shared.getPosterDataForImage(withName: imagePath) { (success, imageData) in
                             self.movies[index].backdropPathImageData = imageData
-                            //downloadGroup.leave()
                             self.viewDelegate?.updateRow(rowIndex: index)
                         }
                     }
@@ -86,7 +84,6 @@ extension GeneralViewModel: GeneralViewModelProtocol {
         SimpleWebService.shared.getPopularMovies(forPage: duePageIndex) { (isSuccess, result) in
             if isSuccess && result != nil {
                 self.movies.append(contentsOf: result!)
-                let downloadGroup = DispatchGroup()
                 self.viewDelegate?.updateView()
                 for index in self.movies.indices {
                     if let imagePath = self.movies[index].backdrop_path {

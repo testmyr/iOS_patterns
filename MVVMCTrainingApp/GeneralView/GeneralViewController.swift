@@ -68,7 +68,7 @@ extension GeneralViewController: UISearchBarDelegate {
     
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        if let searchText = searchBar.text, text.count > 3 {
+        if let searchText = searchBar.text, searchText.count > 3 {
             viewModel.searchFor(text: searchText)
         }
     }
