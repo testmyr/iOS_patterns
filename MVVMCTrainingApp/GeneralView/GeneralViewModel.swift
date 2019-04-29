@@ -37,7 +37,7 @@ protocol GeneralViewModelCoordinatorDelegate: AnyObject {
 class GeneralViewModel {
     var isPageLoading = false
     var movies = [MovieDescription]()
-    var showedMovies = [MovieDescription]()//filter; computed property
+    var showedMovies: [MovieDescription]?
     weak var coordinatorDelegate: GeneralViewModelCoordinatorDelegate?
     weak var viewDelegate: GeneralViewModelViewDelegate?
     
@@ -67,14 +67,14 @@ class GeneralViewModel {
 
 extension GeneralViewModel: GeneralViewModelProtocol {
     func numberOfMovies() -> Int {
-        return movies.count
+        return showedMovies == nil ? movies.count : showedMovies!.count
     }
     func movieFor(rowAtIndex index: Int) -> MovieDescription {
-        return movies[index]
+        return showedMovies == nil ? movies[index] : showedMovies![index]
     }
     
     func getNextPage() {
-        if isPageLoading {
+        if isPageLoading || showedMovies != nil {
             return
         }
         isPageLoading = true
@@ -99,7 +99,13 @@ extension GeneralViewModel: GeneralViewModelProtocol {
     }
     
     func searchFor(text: String) {
-        self.viewDelegate?.updateView()
+        if text.count > 2 {
+            showedMovies = movies.filter{$0.title.hasPrefix(text)}
+            self.viewDelegate?.updateView()
+        } else if let moviesFiltered = showedMovies, moviesFiltered.count != movies.count {
+            showedMovies = nil
+            self.viewDelegate?.updateView()
+        }
     }
     
     func didSelectRow(_ row: Int) {

@@ -9,8 +9,6 @@
 import Foundation
 import UIKit
 
-//I've forgot how to make scrollView strechable and no time to check the past project that has it
-
 class DetailedViewController: UIViewController {
     @IBOutlet weak var imgPoster: UIImageView!
     @IBOutlet weak var lblTitle: UILabel!

@@ -61,16 +61,18 @@ class GeneralViewController: UIViewController {
 
 extension GeneralViewController: UISearchBarDelegate {
     
-//    //todo
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        print("searchText \(searchBar.text)")
-//    }
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if let searchText = searchBar.text {
+            viewModel.searchFor(text: searchText)
+        }
+    }
     
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        if let searchText = searchBar.text, searchText.count > 3 {
-            viewModel.searchFor(text: searchText)
-        }
+        self.view.endEditing(false)
+//        if let searchText = searchBar.text {
+//            viewModel.searchFor(text: searchText)
+//        }
     }
 }
 
