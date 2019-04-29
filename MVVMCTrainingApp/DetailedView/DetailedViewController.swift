@@ -19,6 +19,10 @@ class DetailedViewController: UIViewController {
     @IBOutlet weak var lblDate: UILabel!
     @IBOutlet weak var lblOverview: UILabel!
     
+    //used only for avoiding errors/warnings in IB
+    @IBOutlet weak var cnstrHeightIB: NSLayoutConstraint!
+    
+    
     var viewModel: DetailedViewModelProtocol! {
         didSet {
             viewModel.viewDelegate = self
@@ -27,11 +31,18 @@ class DetailedViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        cnstrHeightIB.isActive = false
         updateView()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
     }
     
     @IBAction func btnWatchTrailerClicked(_ sender: Any) {
     }
+    
+    
     
 }
 
