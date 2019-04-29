@@ -23,14 +23,16 @@ protocol DetailedViewModelProtocol {
     func getImageData() -> Data?
     
     func playTrailerClicked()
+    func enableButton()
 }
 
 protocol DetailedViewModelViewDelegate: AnyObject {
     func updateView()
+    func enableButton()
 }
 
 protocol DetailedViewModelCoordinatorDelegate: AnyObject {
-    func playTrailerClicked()
+    func playTrailerClicked(movieId: String)
 }
 
 
@@ -73,6 +75,9 @@ extension DetailedViewModel: DetailedViewModelProtocol {
     }
     
     func playTrailerClicked() {
-        coordinatorDelegate?.playTrailerClicked()
+        coordinatorDelegate?.playTrailerClicked(movieId: self.movieInfo.movieId)
+    }
+    func enableButton() {
+        viewDelegate?.enableButton()
     }
 }

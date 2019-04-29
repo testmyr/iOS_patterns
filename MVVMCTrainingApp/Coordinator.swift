@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 
-
 class Coordinator {
     let window: UIWindow?
     let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -24,9 +23,7 @@ class Coordinator {
         viewModel.coordinatorDelegate = self
         return viewModel
     }()
-    //var detailedVC: DetailedViewController?
-    
-    
+    var detailedViewModel: DetailedViewModel!
     
     
     init(window: UIWindow?) {
@@ -45,7 +42,7 @@ class Coordinator {
 extension Coordinator: GeneralViewModelCoordinatorDelegate {
     func didSelectRow(_ row: Int) {
         if let selectedMovie = popularMoviesViewModel.selectedMovie {
-            let detailedViewModel = DetailedViewModel(movieInfo: selectedMovie)
+            detailedViewModel = DetailedViewModel(movieInfo: selectedMovie)
             detailedViewModel.coordinatorDelegate = self
             if let detailedVC = storyboard.instantiateViewController(withIdentifier: "DetailedViewController") as? DetailedViewController {
                 detailedVC.viewModel = detailedViewModel
@@ -57,14 +54,18 @@ extension Coordinator: GeneralViewModelCoordinatorDelegate {
     }
 }
 
-extension Coordinator: DetailedViewModelViewDelegate {
-    func updateView() {
-        //detailedVC.updateView()
-    }
-}
-
 extension Coordinator: DetailedViewModelCoordinatorDelegate {
-    func playTrailerClicked() {
-        
+    func playTrailerClicked(movieId: String) {
+        if let playerVC = self.storyboard.instantiateViewController(withIdentifier: "PlayerViewController") as? PlayerViewController {
+            playerVC.title = "Trailer"
+            let playerViewModel = PlayerViewModel(movieId: movieId) { [unowned self] in
+                DispatchQueue.main.async {
+                    self.rootNavigationController.pushViewController(playerVC, animated: true)
+                    self.detailedViewModel.enableButton()
+                }
+            }
+            playerViewModel.coordinatorDelegate = self
+            playerVC.viewModel = playerViewModel
+        }
     }
 }

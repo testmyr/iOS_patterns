@@ -27,6 +27,10 @@
 		5ADE20132248869500D0775A /* MovieDetailed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADE20102248869500D0775A /* MovieDetailed.swift */; };
 		5ADE20142248869500D0775A /* SimpleWebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADE20112248869500D0775A /* SimpleWebService.swift */; };
 		5ADE20152248869500D0775A /* MovieDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADE20122248869500D0775A /* MovieDescription.swift */; };
+		5AE2F33822772A1E008B5F26 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE2F33722772A1E008B5F26 /* PlayerViewController.swift */; };
+		5AE2F33922772A1E008B5F26 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE2F33722772A1E008B5F26 /* PlayerViewController.swift */; };
+		5AE2F33B22772A32008B5F26 /* PlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE2F33A22772A32008B5F26 /* PlayerViewModel.swift */; };
+		5AE2F33C22772A32008B5F26 /* PlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE2F33A22772A32008B5F26 /* PlayerViewModel.swift */; };
 		5AF2F2592248A1D000AFD5B4 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF2F2582248A1D000AFD5B4 /* Coordinator.swift */; };
 		5AF2F25A2248A1D000AFD5B4 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF2F2582248A1D000AFD5B4 /* Coordinator.swift */; };
 		5AF2F25B2248A42700AFD5B4 /* GeneralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6EDADE22488CE100320A1B /* GeneralViewController.swift */; };
@@ -68,6 +72,8 @@
 		5ADE20102248869500D0775A /* MovieDetailed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieDetailed.swift; sourceTree = "<group>"; };
 		5ADE20112248869500D0775A /* SimpleWebService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleWebService.swift; sourceTree = "<group>"; };
 		5ADE20122248869500D0775A /* MovieDescription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieDescription.swift; sourceTree = "<group>"; };
+		5AE2F33722772A1E008B5F26 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
+		5AE2F33A22772A32008B5F26 /* PlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewModel.swift; sourceTree = "<group>"; };
 		5AF2F2582248A1D000AFD5B4 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		5AF2F25D2248C13A00AFD5B4 /* LLSpinner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LLSpinner.swift; sourceTree = "<group>"; };
 		5AF2F2612248C8E100AFD5B4 /* DetailedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedViewController.swift; sourceTree = "<group>"; };
@@ -129,6 +135,7 @@
 		5ADE1FE622484C4800D0775A /* MVVMCTrainingApp */ = {
 			isa = PBXGroup;
 			children = (
+				5AE2F336227729D9008B5F26 /* PlayerView */,
 				5AF2F2602248C89B00AFD5B4 /* DetailedView */,
 				5A6EDAE522489BFB00320A1B /* GeneralView */,
 				5ADE20162248882400D0775A /* Models */,
@@ -161,6 +168,15 @@
 				5ADE20102248869500D0775A /* MovieDetailed.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		5AE2F336227729D9008B5F26 /* PlayerView */ = {
+			isa = PBXGroup;
+			children = (
+				5AE2F33722772A1E008B5F26 /* PlayerViewController.swift */,
+				5AE2F33A22772A32008B5F26 /* PlayerViewModel.swift */,
+			);
+			path = PlayerView;
 			sourceTree = "<group>";
 		};
 		5AF2F2602248C89B00AFD5B4 /* DetailedView */ = {
@@ -347,8 +363,10 @@
 				5A6EDADF22488CE100320A1B /* GeneralViewController.swift in Sources */,
 				5AF2F2622248C8E100AFD5B4 /* DetailedViewController.swift in Sources */,
 				5ADE1FEA22484C4800D0775A /* ViewController.swift in Sources */,
+				5AE2F33B22772A32008B5F26 /* PlayerViewModel.swift in Sources */,
 				5ADE20132248869500D0775A /* MovieDetailed.swift in Sources */,
 				5AF2F2652248C90F00AFD5B4 /* DetailedViewModel.swift in Sources */,
+				5AE2F33822772A1E008B5F26 /* PlayerViewController.swift in Sources */,
 				5ADE20142248869500D0775A /* SimpleWebService.swift in Sources */,
 				5ADE1FE822484C4800D0775A /* AppDelegate.swift in Sources */,
 				5A6EDADD22488BE400320A1B /* GeneralViewModel.swift in Sources */,
@@ -365,7 +383,9 @@
 				5ADE1FFD22484C5100D0775A /* MVVMCTrainingAppTests.swift in Sources */,
 				5AF2F2632248C8E100AFD5B4 /* DetailedViewController.swift in Sources */,
 				5A6EDAE122488CE800320A1B /* GeneralViewModel.swift in Sources */,
+				5AE2F33C22772A32008B5F26 /* PlayerViewModel.swift in Sources */,
 				5AF2F25B2248A42700AFD5B4 /* GeneralViewController.swift in Sources */,
+				5AE2F33922772A1E008B5F26 /* PlayerViewController.swift in Sources */,
 				5A6EDAE322488F7000320A1B /* MovieDetailed.swift in Sources */,
 				5AF2F25F2248C13A00AFD5B4 /* LLSpinner.swift in Sources */,
 				5A6EDAE222488F6D00320A1B /* SimpleWebService.swift in Sources */,
@@ -527,13 +547,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = AL2W2VZ8F6;
+				DEVELOPMENT_TEAM = 7ZT8S862ZF;
 				INFOPLIST_FILE = MVVMCTrainingApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = sdk.MVVMCTrainingApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.testApp.AM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -546,13 +566,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = AL2W2VZ8F6;
+				DEVELOPMENT_TEAM = 7ZT8S862ZF;
 				INFOPLIST_FILE = MVVMCTrainingApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = sdk.MVVMCTrainingApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.testApp.AM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";

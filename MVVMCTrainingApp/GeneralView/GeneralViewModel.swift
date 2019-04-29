@@ -100,7 +100,7 @@ extension GeneralViewModel: GeneralViewModelProtocol {
     
     func searchFor(text: String) {
         if text.count > 2 {
-            showedMovies = movies.filter{$0.title.hasPrefix(text)}
+            showedMovies = movies.filter{$0.title.contains(text)}
             self.viewDelegate?.updateView()
         } else if let moviesFiltered = showedMovies, moviesFiltered.count != movies.count {
             showedMovies = nil
@@ -109,9 +109,10 @@ extension GeneralViewModel: GeneralViewModelProtocol {
     }
     
     func didSelectRow(_ row: Int) {
+        let moviesList = showedMovies == nil ? movies : showedMovies!
         selectedMovie = MovieInfo()
-        selectedMovie?.movieId = String(movies[row].id)
-        selectedMovie?.imageData = movies[row].backdropPathImageData
+        selectedMovie?.movieId = String(moviesList[row].id)
+        selectedMovie?.imageData = moviesList[row].backdropPathImageData
         coordinatorDelegate?.didSelectRow(row)
     }
 }

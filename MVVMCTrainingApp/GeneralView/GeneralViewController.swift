@@ -70,9 +70,6 @@ extension GeneralViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         self.view.endEditing(false)
-//        if let searchText = searchBar.text {
-//            viewModel.searchFor(text: searchText)
-//        }
     }
 }
 
