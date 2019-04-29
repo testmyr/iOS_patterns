@@ -19,13 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         appCoordinator = Coordinator(window: window)
         appCoordinator.start()
-//        SimpleWebService.shared.getPopularMovies(forPage: 1) { (isSuccess, result) in
-//
-//        }
-        SimpleWebService.shared.getYouTubeVideoId(byMovieID: "271110")  { (isSuccess, result) in
-            
-        }
-        // Override point for customization after application launch.
         return true
     }
 
