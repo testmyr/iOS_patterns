@@ -8,22 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		5AD2CEE62281AFA100FE65C9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD2CEE52281AFA100FE65C9 /* AppDelegate.swift */; };
-		5AD2CEE82281AFA100FE65C9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD2CEE72281AFA100FE65C9 /* ViewController.swift */; };
+		5AD2CEE82281AFA100FE65C9 /* GalleryPhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD2CEE72281AFA100FE65C9 /* GalleryPhotosViewController.swift */; };
 		5AD2CEEB2281AFA100FE65C9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5AD2CEE92281AFA100FE65C9 /* Main.storyboard */; };
 		5AD2CEEE2281AFA100FE65C9 /* VIPERTrainingApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5AD2CEEC2281AFA100FE65C9 /* VIPERTrainingApp.xcdatamodeld */; };
 		5AD2CEF02281AFC300FE65C9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5AD2CEEF2281AFC300FE65C9 /* Assets.xcassets */; };
 		5AD2CEF32281AFC300FE65C9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5AD2CEF12281AFC300FE65C9 /* LaunchScreen.storyboard */; };
+		5AD2CEFB22822C0900FE65C9 /* ImageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD2CEFA22822C0900FE65C9 /* ImageViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		5AD2CEE22281AFA100FE65C9 /* VIPERTrainingApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VIPERTrainingApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AD2CEE52281AFA100FE65C9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		5AD2CEE72281AFA100FE65C9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		5AD2CEE72281AFA100FE65C9 /* GalleryPhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryPhotosViewController.swift; sourceTree = "<group>"; };
 		5AD2CEEA2281AFA100FE65C9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		5AD2CEED2281AFA100FE65C9 /* VIPERTrainingApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VIPERTrainingApp.xcdatamodel; sourceTree = "<group>"; };
 		5AD2CEEF2281AFC300FE65C9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5AD2CEF22281AFC300FE65C9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5AD2CEF42281AFC300FE65C9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5AD2CEFA22822C0900FE65C9 /* ImageViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +59,8 @@
 			isa = PBXGroup;
 			children = (
 				5AD2CEE52281AFA100FE65C9 /* AppDelegate.swift */,
-				5AD2CEE72281AFA100FE65C9 /* ViewController.swift */,
+				5AD2CEE72281AFA100FE65C9 /* GalleryPhotosViewController.swift */,
+				5AD2CEFA22822C0900FE65C9 /* ImageViewCell.swift */,
 				5AD2CEE92281AFA100FE65C9 /* Main.storyboard */,
 				5AD2CEEF2281AFC300FE65C9 /* Assets.xcassets */,
 				5AD2CEF12281AFC300FE65C9 /* LaunchScreen.storyboard */,
@@ -138,8 +141,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5AD2CEE82281AFA100FE65C9 /* ViewController.swift in Sources */,
+				5AD2CEE82281AFA100FE65C9 /* GalleryPhotosViewController.swift in Sources */,
 				5AD2CEE62281AFA100FE65C9 /* AppDelegate.swift in Sources */,
+				5AD2CEFB22822C0900FE65C9 /* ImageViewCell.swift in Sources */,
 				5AD2CEEE2281AFA100FE65C9 /* VIPERTrainingApp.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -287,13 +291,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = AL2W2VZ8F6;
+				DEVELOPMENT_TEAM = 7ZT8S862ZF;
 				INFOPLIST_FILE = VIPERTrainingApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = sdk.VIPERTrainingApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.testApp.AM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -305,13 +309,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = AL2W2VZ8F6;
+				DEVELOPMENT_TEAM = 7ZT8S862ZF;
 				INFOPLIST_FILE = VIPERTrainingApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = sdk.VIPERTrainingApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.testApp.AM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
