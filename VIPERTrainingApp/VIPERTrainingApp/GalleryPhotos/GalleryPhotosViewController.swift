@@ -28,22 +28,21 @@ class GalleryPhotosViewController: UICollectionViewController {
                                              left: 20.0,
                                              bottom: 50.0,
                                              right: 20.0)
-    
-    fileprivate var imageAssets: PHFetchResult<PHAsset>?
-    fileprivate let imageManager = PHCachingImageManager()
-    fileprivate var thumbnailSize: CGSize!
     fileprivate var previousPreheatRect = CGRect.zero
+    
+    //GalleryPhotosViewProtocol
+    var presenter: GalleryPhotosViewToPresenterProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchGallaryResources()
+        self.title = "Gallery"
+        presenter?.startFetching()
         collectionView.delegate = self
-        PHPhotoLibrary.shared().register(self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        thumbnailSize = viewSize();
+        presenter?.thumbnailSize = viewSize();//TODO assigning also after a device changed orientation
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -52,37 +51,11 @@ class GalleryPhotosViewController: UICollectionViewController {
     }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if imageAssets != nil {
-            updateCachedAssets()
-        }
+        updateCachedAssets()
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         self.collectionView.reloadData()
-    }
-    
-    deinit {
-        PHPhotoLibrary.shared().unregisterChangeObserver(self)
-    }
-    
-    
-    func fetchGallaryResources(){
-        let status = PHPhotoLibrary.authorizationStatus()
-        if (status == .denied || status == .restricted) {
-            return
-        }else{
-            PHPhotoLibrary.requestAuthorization { (authStatus) in
-                if authStatus == .authorized{
-                    let fetchOptions = PHFetchOptions()
-                    fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
-                    self.imageAssets = PHAsset.fetchAssets(with: .image, options: fetchOptions)
-                    DispatchQueue.main.async {
-                        self.collectionView.reloadData()
-                    }
-                }
-                
-            }
-        }
     }
     
     func viewSize() -> CGSize {
@@ -109,16 +82,12 @@ class GalleryPhotosViewController: UICollectionViewController {
         let (addedRects, removedRects) = differencesBetweenRects(previousPreheatRect, preheatRect)
         let addedAssets = addedRects
             .flatMap { rect in collectionView!.indexPathsForElements(in: rect) }
-            .map { indexPath in imageAssets!.object(at: indexPath.item) }
+            .map { indexPath in presenter?[indexPath.item] }
         let removedAssets = removedRects
             .flatMap { rect in collectionView!.indexPathsForElements(in: rect) }
-            .map { indexPath in imageAssets!.object(at: indexPath.item) }
-        
-        // Update the assets the PHCachingImageManager is caching.
-        imageManager.startCachingImages(for: addedAssets,
-                                        targetSize: thumbnailSize, contentMode: .aspectFill, options: nil)
-        imageManager.stopCachingImages(for: removedAssets,
-                                       targetSize: thumbnailSize, contentMode: .aspectFill, options: nil)
+            .map { indexPath in presenter?[indexPath.item]  }
+        // Update the assets the presenter is caching.
+        presenter?.updateCachedAssets(addedAssets: addedAssets as! [PHAsset], removedAssets: removedAssets as! [PHAsset])
         // Store the computed rectangle for future comparison.
         previousPreheatRect = preheatRect
     }
@@ -152,54 +121,26 @@ class GalleryPhotosViewController: UICollectionViewController {
     
     
     // MARK: UICollectionView
-    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return imageAssets == nil ? 0 : imageAssets!.count
+        return presenter?.numberOfPhotoItems() ?? 0
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let asset = imageAssets!.object(at: indexPath.item)
         // Dequeue a ImageViewCell.
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageViewCell", for: indexPath) as? ImageViewCell
             else { fatalError("Unexpected cell in collection view") }
-        // Request an image for the asset from the PHCachingImageManager.
-        cell.representedAssetIdentifier = asset.localIdentifier
-        imageManager.requestImage(for: asset, targetSize: thumbnailSize, contentMode: .aspectFill, options: nil, resultHandler: { image, _ in
-            // UIKit may have recycled this cell by the handler's activation time.
-            // Set the cell's thumbnail image only if it's still showing the same asset.
-            if cell.representedAssetIdentifier == asset.localIdentifier {
+        // Request an image for an asset
+        cell.representedAssetIdentifier = presenter?[indexPath.row]?.localIdentifier
+        presenter?.fetchItemFor(indexPath: indexPath){ identifier, image in
+            if cell.representedAssetIdentifier == identifier {
                 cell.imgVwGalleryImage.image = image
             }
-        })
+        }
         return cell
     }
 }
 
-// MARK: PHPhotoLibraryChangeObserver
-
-extension GalleryPhotosViewController: PHPhotoLibraryChangeObserver {
-    /// - Tag: RespondToChanges
-    func photoLibraryDidChange(_ changeInstance: PHChange) {
-        
-        // Change notifications may originate from a background queue.
-        // Re-dispatch to the main queue before acting on the change,
-        // so you can update the UI.
-        if imageAssets != nil {
-            DispatchQueue.main.sync {
-                // Check each of the three top-level fetches for changes.
-                if let changeDetails = changeInstance.changeDetails(for: imageAssets!) {
-                    // Update the cached fetch result.
-                    imageAssets = changeDetails.fetchResultAfterChanges
-                    collectionView.reloadData()
-                    // Don't update the table row that always reads "All Photos."
-                }
-            }
-        }
-    }
-}
-
 // MARK: - CollectionView UICollectionViewDelegateFlowLayout
-
 extension GalleryPhotosViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
@@ -217,5 +158,13 @@ extension GalleryPhotosViewController : UICollectionViewDelegateFlowLayout {
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return sectionInsets.left
+    }
+}
+
+extension GalleryPhotosViewController: GalleryPhotosViewProtocol {
+    func updateView(){
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
     }
 }
