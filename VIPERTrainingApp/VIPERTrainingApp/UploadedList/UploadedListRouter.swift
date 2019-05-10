@@ -7,7 +7,21 @@
 //
 
 import Foundation
+import UIKit
 
-class UploadedListRouter {
-    
+class UploadedListRouter: UploadedListRouterProtocol {
+    private static let storyboard = UIStoryboard(name: "Main", bundle: nil)
+    static func createUploadedListModule() -> UploadedListVC {
+        let view = storyboard.instantiateViewController(withIdentifier: "UploadedListVC") as! UploadedListVC
+        let presenter: UploadedListViewToPresenterProtocol & UploadedListInteractorToPresenterProtocol = UploadedListPresenter()
+        let router: UploadedListRouterProtocol = UploadedListRouter()
+
+        DataInteractor.shared.uploadedListPresenter = presenter
+        view.presenter = presenter
+        presenter.view = view
+        presenter.router = router
+        
+        return view
+
+    }
 }

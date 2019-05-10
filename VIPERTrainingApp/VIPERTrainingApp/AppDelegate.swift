@@ -13,10 +13,10 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var backgroundSessionCompletionHandler: (() -> Void)?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let galleryPhotosView = GalleryPhotosRouter.createGalleryPhotosModule()        
+        let galleryPhotosView = GalleryPhotosRouter.createGalleryPhotosModule()
         // init the navigation-controller with a view-controller
         let navigationController = UINavigationController()
         navigationController.viewControllers = [galleryPhotosView]
@@ -25,6 +25,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
         return true
+    }
+    
+    func application(_ application: UIApplication, handleEventsForBackgroundURLSession
+        identifier: String, completionHandler: @escaping () -> Void) {
+        backgroundSessionCompletionHandler = completionHandler
+        print("handleEventsForBackgroundURLSession")
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

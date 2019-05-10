@@ -9,21 +9,16 @@
 import Foundation
 import Photos
 
-struct ImageContainer {
-    let identifier: String
-    let image: UIImage?
-}
-
 class GalleryPhotosPresenter {
     private let imageManager = PHCachingImageManager()
+    private var imageAssets: PHFetchResult<PHAsset>?
+    var thumbnailSize: CGSize!
     
     //GalleryPhotosViewToPresenterProtocol
     weak var view: GalleryPhotosViewProtocol?
     //var interactor: GalleryPhotosPresenterToInteractorProtocol?
     let interactor: GalleryPhotosPresenterToInteractorProtocol = DataInteractor.shared
     var router: GalleryPhotosRouterProtocol?
-    var thumbnailSize: CGSize!
-    fileprivate var imageAssets: PHFetchResult<PHAsset>?
 }
 
 extension GalleryPhotosPresenter:GalleryPhotosInteractorToPresenterProtocol {
@@ -52,7 +47,6 @@ extension GalleryPhotosPresenter: GalleryPhotosViewToPresenterProtocol {
         return imageAssets == nil ? 0 : imageAssets!.count
     }
     func fetchItemFor(indexPath: IndexPath, success: @escaping (String, UIImage) -> Void ) {
-        
         let asset = imageAssets!.object(at: indexPath.row)
         // Request an image for the asset from the PHCachingImageManager.
         imageManager.requestImage(for: asset, targetSize: thumbnailSize ?? PHImageManagerMaximumSize, contentMode: .aspectFill, options: nil, resultHandler: { image, _ in
@@ -60,6 +54,16 @@ extension GalleryPhotosPresenter: GalleryPhotosViewToPresenterProtocol {
                 success(asset.localIdentifier, image)
             }
         })
+    }
+    
+    func selectItem(atIndex index: Int)  {
+        interactor.uploadItem(atIndex: index)
+    }
+    
+    func pushToUploadedList (navigationConroller navigationController:UINavigationController) {
+        let uploadedListModule = UploadedListRouter.createUploadedListModule()
+        navigationController.pushViewController(uploadedListModule, animated: true)
+        
     }
     
     subscript(index: Int) -> PHAsset? {

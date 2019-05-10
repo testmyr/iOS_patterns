@@ -21,6 +21,7 @@ protocol GalleryPhotosPresenterToInteractorProtocol:class {
     
     var galleryPhotosPresenter:GalleryPhotosInteractorToPresenterProtocol? { get set }
     func fetchImages()
+    func uploadItem(atIndex index: Int)
     
 }
 
@@ -37,6 +38,8 @@ protocol GalleryPhotosViewToPresenterProtocol: class {
     func updateCachedAssets(addedAssets: [PHAsset], removedAssets: [PHAsset])
     func fetchItemFor(indexPath: IndexPath, success: @escaping (String, UIImage) -> Void )
     func numberOfPhotoItems() -> Int
+    func selectItem(atIndex index: Int)
+    func pushToUploadedList (navigationConroller navigationController:UINavigationController)
     subscript(index: Int) -> PHAsset? { get }
 }
 

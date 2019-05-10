@@ -37,7 +37,6 @@ class GalleryPhotosViewController: UICollectionViewController {
         super.viewDidLoad()
         self.title = "Gallery"
         presenter?.startFetching()
-        collectionView.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,13 +49,18 @@ class GalleryPhotosViewController: UICollectionViewController {
         updateCachedAssets()
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        self.collectionView.reloadData()
+    }
+    
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         updateCachedAssets()
     }
     
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        self.collectionView.reloadData()
+    @IBAction func listBarClicked(_ sender: Any) {
+        presenter?.pushToUploadedList(navigationConroller: self.navigationController!)
     }
+    
     
     func viewSize() -> CGSize {
         let paddingSpace = sectionInsets.left * (numberOfColumns + 1)
@@ -137,6 +141,10 @@ class GalleryPhotosViewController: UICollectionViewController {
             }
         }
         return cell
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        presenter?.selectItem(atIndex: indexPath.row)
     }
 }
 
