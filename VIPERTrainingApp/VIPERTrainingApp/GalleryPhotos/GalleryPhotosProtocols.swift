@@ -49,4 +49,5 @@ protocol GalleryPhotosViewProtocol: class {
     var presenter: GalleryPhotosViewToPresenterProtocol? { get set }
     func updateView()
     func reloadCellWithIdentifier(identifier: String)
+    func showAlert()
 }

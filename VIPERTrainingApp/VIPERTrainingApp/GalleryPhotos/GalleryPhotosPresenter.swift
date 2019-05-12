@@ -17,12 +17,12 @@ class GalleryPhotosPresenter {
     
     //GalleryPhotosViewToPresenterProtocol
     weak var view: GalleryPhotosViewProtocol?
-    //var interactor: GalleryPhotosPresenterToInteractorProtocol?
     let interactor: GalleryPhotosPresenterToInteractorProtocol = DataInteractor.shared
     var router: GalleryPhotosRouterProtocol?
 }
 
-extension GalleryPhotosPresenter:GalleryPhotosInteractorToPresenterProtocol {
+// MARK: - GalleryPhotosInteractorToPresenterProtocol
+extension GalleryPhotosPresenter: GalleryPhotosInteractorToPresenterProtocol {
     func assetsFetch(assets: PHFetchResult<PHAsset>?) {
         if assets != nil {
             imageAssets = assets
@@ -33,9 +33,13 @@ extension GalleryPhotosPresenter:GalleryPhotosInteractorToPresenterProtocol {
     func assets(withIdentifier identifier: String, wasSuccessfullyUploaded success: Bool) {
         self.uploadIdentifiersPool.remove(identifier)
         self.view?.reloadCellWithIdentifier(identifier: identifier)
+        if !success {
+            view?.showAlert()
+        }
     }
 }
 
+// MARK: - GalleryPhotosViewToPresenterProtocol
 extension GalleryPhotosPresenter: GalleryPhotosViewToPresenterProtocol {
     func startFetching() {
         interactor.fetchImages()
@@ -54,7 +58,7 @@ extension GalleryPhotosPresenter: GalleryPhotosViewToPresenterProtocol {
     }
     func fetchItemFor(indexPath: IndexPath, success: @escaping (String, UIImage, Bool) -> Void ) {
         let asset = imageAssets!.object(at: indexPath.row)
-        // Request an image for the asset from the PHCachingImageManager.
+        // Request an image for an asset from the PHCachingImageManager.
         imageManager.requestImage(for: asset, targetSize: thumbnailSize ?? PHImageManagerMaximumSize, contentMode: .aspectFill, options: nil, resultHandler: { image, _ in
             if let image = image {
                 let identifier = asset.localIdentifier
@@ -73,9 +77,7 @@ extension GalleryPhotosPresenter: GalleryPhotosViewToPresenterProtocol {
     
     
     func pushToUploadedList (navigationConroller navigationController:UINavigationController) {
-        let uploadedListModule = UploadedListRouter.createUploadedListModule()
-        navigationController.pushViewController(uploadedListModule, animated: true)
-        
+        router?.pushToUploadedList(navigationConroller: navigationController)
     }
     
     subscript(index: Int) -> PHAsset? {

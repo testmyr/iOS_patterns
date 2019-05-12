@@ -14,7 +14,7 @@ class UploadedListPresenter {
     var router: UploadedListRouterProtocol?
 }
 
-
+// MARK: - UploadedListInteractorToPresenterProtocol
 extension UploadedListPresenter: UploadedListInteractorToPresenterProtocol {
     
     func beginUpdates() {
@@ -37,6 +37,7 @@ extension UploadedListPresenter: UploadedListInteractorToPresenterProtocol {
     }
 }
 
+// MARK: - UploadedListViewToPresenterProtocol
 extension UploadedListPresenter: UploadedListViewToPresenterProtocol {
     func getItem(atIndexPath indexPath: IndexPath) -> ImageUrl {
         return interactor.getItem(atIndexPath: indexPath)

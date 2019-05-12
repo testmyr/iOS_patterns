@@ -75,6 +75,7 @@ class DataInteractor: NSObject {
     weak var uploadedListPresenter:UploadedListInteractorToPresenterProtocol?
 }
 
+// MARK: NSFetchedResultsControllerDelegate
 extension DataInteractor: NSFetchedResultsControllerDelegate {
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
@@ -115,6 +116,7 @@ extension DataInteractor: PHPhotoLibraryChangeObserver {
     }
 }
 
+// MARK: - GalleryPhotosPresenterToInteractorProtocol
 extension DataInteractor: GalleryPhotosPresenterToInteractorProtocol {
     func fetchImages() {
         PHPhotoLibrary.requestAuthorization { [unowned self] (authStatus) in
@@ -198,6 +200,7 @@ extension DataInteractor: GalleryPhotosPresenterToInteractorProtocol {
     }
 }
 
+// MARK: - UploadedListPresenterToInteractorProtocol
 extension DataInteractor: UploadedListPresenterToInteractorProtocol {
     func getItem(atIndexPath indexPath: IndexPath) -> ImageUrl {
         return fetchedResults.object(at: indexPath)

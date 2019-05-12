@@ -62,15 +62,14 @@ class GalleryPhotosViewController: UICollectionViewController {
     }
     
     
-    func viewSize() -> CGSize {
+    private func viewSize() -> CGSize {
         let paddingSpace = sectionInsets.left * (numberOfColumns + 1)
         let availableWidth = view.frame.width - paddingSpace
         let widthPerItem = availableWidth / numberOfColumns
         return CGSize(width: widthPerItem, height: widthPerItem)
     }
-
     
-    fileprivate func updateCachedAssets() {
+    private func updateCachedAssets() {
         // Update only if the view is visible.
         guard isViewLoaded && view.window != nil else { return }
         
@@ -96,7 +95,7 @@ class GalleryPhotosViewController: UICollectionViewController {
         previousPreheatRect = preheatRect
     }
     
-    fileprivate func differencesBetweenRects(_ old: CGRect, _ new: CGRect) -> (added: [CGRect], removed: [CGRect]) {
+    private func differencesBetweenRects(_ old: CGRect, _ new: CGRect) -> (added: [CGRect], removed: [CGRect]) {
         if old.intersects(new) {
             var added = [CGRect]()
             if new.maxY > old.maxY {
@@ -175,6 +174,7 @@ extension GalleryPhotosViewController : UICollectionViewDelegateFlowLayout {
     }
 }
 
+// MARK: - GalleryPhotosViewProtocol
 extension GalleryPhotosViewController: GalleryPhotosViewProtocol {
     func updateView(){
         DispatchQueue.main.async {
@@ -184,9 +184,22 @@ extension GalleryPhotosViewController: GalleryPhotosViewProtocol {
     
     func reloadCellWithIdentifier(identifier: String)  {
         DispatchQueue.main.async {
+            //Find the cell that coresponds the assets identifier
             let cells = self.collectionView.visibleCells.filter{($0 as? ImageViewCell)?.representedAssetIdentifier == identifier}
             if cells.count > 0, let indexPath = self.collectionView.indexPath(for: cells[0]) {
+                //and reload it
                 self.collectionView.reloadItems(at: [indexPath])
+            }
+        }
+    }
+    
+    func showAlert() {
+        DispatchQueue.main.async {
+            if self.isViewLoaded && (self.view.window != nil) && self.navigationController?.topViewController === self {
+                let alertController = UIAlertController(title: "Error!", message:
+                    "File was not uploaded", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "OK", style: .default))
+                self.present(alertController, animated: true, completion: nil)
             }
         }
     }

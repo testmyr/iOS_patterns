@@ -26,7 +26,8 @@ class GalleryPhotosRouter: GalleryPhotosRouterProtocol {
     }
     
     
-    func pushToUploadedList(navigationConroller:UINavigationController) {
-        
+    func pushToUploadedList(navigationConroller:UINavigationController) {        
+        let uploadedListModule = UploadedListRouter.createUploadedListModule()
+        navigationConroller.pushViewController(uploadedListModule, animated: true)
     }
 }

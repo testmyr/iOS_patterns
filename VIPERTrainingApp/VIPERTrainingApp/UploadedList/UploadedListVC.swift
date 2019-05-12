@@ -59,6 +59,7 @@ class UploadedListVC: UITableViewController {
     }
 }
 
+// MARK: - UploadedListViewProtocol
 extension UploadedListVC: UploadedListViewProtocol {
     
     func beginUpdates() {
