@@ -13,6 +13,7 @@ class GalleryPhotosPresenter {
     private let imageManager = PHCachingImageManager()
     private var imageAssets: PHFetchResult<PHAsset>?
     var thumbnailSize: CGSize!
+    private var uploadIdentifiersPool = Set<String>()
     
     //GalleryPhotosViewToPresenterProtocol
     weak var view: GalleryPhotosViewProtocol?
@@ -27,6 +28,11 @@ extension GalleryPhotosPresenter:GalleryPhotosInteractorToPresenterProtocol {
             imageAssets = assets
             view?.updateView()
         }
+    }
+    
+    func assets(withIdentifier identifier: String, wasSuccessfullyUploaded success: Bool) {
+        self.uploadIdentifiersPool.remove(identifier)
+        self.view?.reloadCellWithIdentifier(identifier: identifier)
     }
 }
 
@@ -46,19 +52,25 @@ extension GalleryPhotosPresenter: GalleryPhotosViewToPresenterProtocol {
     func numberOfPhotoItems() -> Int {
         return imageAssets == nil ? 0 : imageAssets!.count
     }
-    func fetchItemFor(indexPath: IndexPath, success: @escaping (String, UIImage) -> Void ) {
+    func fetchItemFor(indexPath: IndexPath, success: @escaping (String, UIImage, Bool) -> Void ) {
         let asset = imageAssets!.object(at: indexPath.row)
         // Request an image for the asset from the PHCachingImageManager.
         imageManager.requestImage(for: asset, targetSize: thumbnailSize ?? PHImageManagerMaximumSize, contentMode: .aspectFill, options: nil, resultHandler: { image, _ in
             if let image = image {
-                success(asset.localIdentifier, image)
+                let identifier = asset.localIdentifier
+                let isUploading = self.uploadIdentifiersPool.contains(identifier)
+                success(identifier, image, isUploading)
             }
         })
     }
     
     func selectItem(atIndex index: Int)  {
-        interactor.uploadItem(atIndex: index)
+        if let asset = imageAssets?.object(at: index) {
+            uploadIdentifiersPool.insert(asset.localIdentifier)
+            interactor.uploadAsset(asset)
+        }
     }
+    
     
     func pushToUploadedList (navigationConroller navigationController:UINavigationController) {
         let uploadedListModule = UploadedListRouter.createUploadedListModule()

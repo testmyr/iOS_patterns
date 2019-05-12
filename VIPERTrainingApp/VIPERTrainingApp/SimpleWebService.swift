@@ -44,7 +44,8 @@ class SimpleWebService {
             }
             if let data = data {
                 if let resultObject = try? JSONSerialization.jsonObject(with: data, options: []) {
-                    print(resultObject)
+                    print("success")
+                    //print(resultObject)
                     if let resultDic = resultObject as? Dictionary<String, Any> {
                         if let dataDic = resultDic["data"] as? Dictionary<String, Any> {
                             if let dateTimeSeconds = dataDic["datetime"] as? TimeInterval, let imageWebUrl = dataDic["link"] as? String {

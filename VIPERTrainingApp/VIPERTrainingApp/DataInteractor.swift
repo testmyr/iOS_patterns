@@ -32,10 +32,14 @@ fileprivate class CoreDataHelper {
 
 //can be divided but let it be shared because it's quite convenient in this particular case
 class DataInteractor: NSObject {
-    private let webService = { SimpleWebService.shared }
-    private let imageManager = PHCachingImageManager()
+    private lazy var webService = { SimpleWebService.shared }()
     
-    static let shared = DataInteractor()
+    private lazy var manager = { PHImageManager.default() }()
+    fileprivate var imageAssets: PHFetchResult<PHAsset>?
+    private var assetsQueue = Queue<PHAsset>()
+    private let queue = DispatchQueue(label: "Serial queue for the upload-response")
+    private var isAssetUploading = false
+    
     lazy var fetchedResults: NSFetchedResultsController<ImageUrl> = {
         let fetchRequest = NSFetchRequest<ImageUrl>(entityName:"ImageUrl")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "timeStamp", ascending:false)]
@@ -54,18 +58,17 @@ class DataInteractor: NSObject {
         
         return controller
     }()
+    
+    static let shared = DataInteractor()
     override private init() {
         super.init()
         PHPhotoLibrary.shared().register(self)
     }
     
-    
     deinit {
         PHPhotoLibrary.shared().unregisterChangeObserver(self)
     }
     
-    
-    fileprivate var imageAssets: PHFetchResult<PHAsset>?
     //GalleryPhotosPresenterToInteractorProtocol
     weak var galleryPhotosPresenter:GalleryPhotosInteractorToPresenterProtocol?
     //UploadedListPresenterToInteractorProtocol
@@ -124,31 +127,51 @@ extension DataInteractor: GalleryPhotosPresenterToInteractorProtocol {
         }
     }
     
-    func uploadItem(atIndex index: Int)  {
+    func uploadAsset(_ asset: PHAsset) {
+        uploadAsset(asset, ignoreQueue: false)
+    }
+    
+    private func uploadAsset(_ asset: PHAsset, ignoreQueue: Bool) {
         //TODO check whether it has been uploaded already
-        if true {
-            if let asset = self.imageAssets?[index] {
-                let manager = PHImageManager.default()
-                let option = PHImageRequestOptions()
-                option.isNetworkAccessAllowed = true
-                option.isSynchronous = true
-                manager.requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFit, options: option) { (image, info) in
-                    //Extract the image data
-                    if var imageData = image!.pngData() {
-                        //Image size is limited by web service API. That's why:
-                        let maxAllowedSize = 1024 * 1024 * 10 - 1
-                        if imageData.count > maxAllowedSize {
-                            var acceptableCompression = CGFloat(1)
-                            let step = CGFloat(0.05)
-                            repeat {
-                                imageData = image!.jpegData(compressionQuality: acceptableCompression)!
-                                acceptableCompression -= step
-                            } while imageData.count > maxAllowedSize && acceptableCompression > step
-                        }
-                        self.webService().uploadImage(withData: imageData){ imageLink, timeStamp in
-                            if let imageLink = imageLink, let timeStamp = timeStamp {
-                                self.saveUrlItemToStorage(url: imageLink, timeStamp: timeStamp)
+        
+        let option = PHImageRequestOptions()
+        option.isNetworkAccessAllowed = true
+        option.isSynchronous = true
+        manager.requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFit, options: option) { (image, info) in
+            if let image = image {
+                //Extract the image data
+                if var imageData = image.pngData() {
+                    //Image size is limited by web service API. That's why:
+                    let maxAllowedSize = 1024 * 1024 * 10 - 1
+                    if imageData.count > maxAllowedSize {
+                        var acceptableCompression = CGFloat(1)
+                        let step = CGFloat(0.05)
+                        repeat {
+                            imageData = image.jpegData(compressionQuality: acceptableCompression)!
+                            acceptableCompression -= step
+                        } while imageData.count > maxAllowedSize && acceptableCompression > step
+                    }
+                    self.queue.async {
+                        let assetIdentifier = asset.localIdentifier
+                        if ignoreQueue || (self.assetsQueue.size == 0 && !self.isAssetUploading) {
+                            self.isAssetUploading = true
+                            self.webService.uploadImage(withData: imageData){ [unowned self] imageLink, timeStamp in
+                                if let imageLink = imageLink, let timeStamp = timeStamp {
+                                    self.saveUrlItemToStorage(url: imageLink, timeStamp: timeStamp)
+                                    self.galleryPhotosPresenter?.assets(withIdentifier: assetIdentifier, wasSuccessfullyUploaded: true)
+                                } else {
+                                    self.galleryPhotosPresenter?.assets(withIdentifier: assetIdentifier, wasSuccessfullyUploaded: false)
+                                }
+                                self.queue.sync {
+                                    if let nextAsset = self.assetsQueue.dequeue() {
+                                        self.uploadAsset(nextAsset, ignoreQueue: true)
+                                    } else {
+                                        self.isAssetUploading = false
+                                    }
+                                }
                             }
+                        } else {
+                            self.assetsQueue.enqueue(asset)
                         }
                     }
                 }

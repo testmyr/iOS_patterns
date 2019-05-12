@@ -12,6 +12,7 @@ import UIKit
 class ImageViewCell: UICollectionViewCell {
     
     @IBOutlet weak var imgVwGalleryImage: UIImageView!
+    @IBOutlet weak var activityInd: UIActivityIndicatorView!
     
     var representedAssetIdentifier: String!
     

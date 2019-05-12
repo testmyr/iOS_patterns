@@ -34,15 +34,23 @@
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4uj-34-d62">
                                             <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         </imageView>
+                                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="a3W-Xd-WLD">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        </activityIndicatorView>
                                     </subviews>
                                 </view>
                                 <constraints>
                                     <constraint firstItem="4uj-34-d62" firstAttribute="centerY" secondItem="a3B-UY-EEn" secondAttribute="centerY" id="35a-i5-bwW"/>
                                     <constraint firstItem="4uj-34-d62" firstAttribute="height" secondItem="a3B-UY-EEn" secondAttribute="height" id="4oN-fA-JMU"/>
+                                    <constraint firstItem="a3W-Xd-WLD" firstAttribute="centerY" secondItem="a3B-UY-EEn" secondAttribute="centerY" id="5kS-WI-VnJ"/>
+                                    <constraint firstItem="a3W-Xd-WLD" firstAttribute="width" secondItem="a3B-UY-EEn" secondAttribute="width" id="Ja2-Rn-61u"/>
                                     <constraint firstItem="4uj-34-d62" firstAttribute="width" secondItem="a3B-UY-EEn" secondAttribute="width" id="Jps-NI-p7Y"/>
                                     <constraint firstItem="4uj-34-d62" firstAttribute="centerX" secondItem="a3B-UY-EEn" secondAttribute="centerX" id="d8i-fy-C7l"/>
+                                    <constraint firstItem="a3W-Xd-WLD" firstAttribute="height" secondItem="a3B-UY-EEn" secondAttribute="height" id="kv3-lc-QDb"/>
+                                    <constraint firstItem="a3W-Xd-WLD" firstAttribute="centerX" secondItem="a3B-UY-EEn" secondAttribute="centerX" id="lTF-rm-OOh"/>
                                 </constraints>
                                 <connections>
+                                    <outlet property="activityInd" destination="a3W-Xd-WLD" id="tvT-cc-YK9"/>
                                     <outlet property="imgVwGalleryImage" destination="4uj-34-d62" id="PEz-bl-Pcy"/>
                                 </connections>
                             </collectionViewCell>

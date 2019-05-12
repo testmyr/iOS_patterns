@@ -135,7 +135,12 @@ class GalleryPhotosViewController: UICollectionViewController {
             else { fatalError("Unexpected cell in collection view") }
         // Request an image for an asset
         cell.representedAssetIdentifier = presenter?[indexPath.row]?.localIdentifier
-        presenter?.fetchItemFor(indexPath: indexPath){ identifier, image in
+        presenter?.fetchItemFor(indexPath: indexPath){ identifier, image, isUploading in
+            if isUploading {
+                cell.activityInd.startAnimating()
+            } else {
+                cell.activityInd.stopAnimating()
+            }
             if cell.representedAssetIdentifier == identifier {
                 cell.imgVwGalleryImage.image = image
             }
@@ -145,6 +150,7 @@ class GalleryPhotosViewController: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         presenter?.selectItem(atIndex: indexPath.row)
+        collectionView.reloadItems(at: [indexPath])
     }
 }
 
@@ -173,6 +179,15 @@ extension GalleryPhotosViewController: GalleryPhotosViewProtocol {
     func updateView(){
         DispatchQueue.main.async {
             self.collectionView.reloadData()
+        }
+    }
+    
+    func reloadCellWithIdentifier(identifier: String)  {
+        DispatchQueue.main.async {
+            let cells = self.collectionView.visibleCells.filter{($0 as? ImageViewCell)?.representedAssetIdentifier == identifier}
+            if cells.count > 0, let indexPath = self.collectionView.indexPath(for: cells[0]) {
+                self.collectionView.reloadItems(at: [indexPath])
+            }
         }
     }
 }
