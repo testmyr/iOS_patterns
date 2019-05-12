@@ -46,7 +46,7 @@ extension UploadedListPresenter: UploadedListViewToPresenterProtocol {
         return interactor.numberOfItems(inSection: section)
     }
     
-    func selectItem(atIndex index: Int) {
-        
+    func goToLink(link: String) {
+        router?.goToLink(link: link)
     }    
 }

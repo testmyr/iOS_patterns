@@ -12,6 +12,7 @@ import Foundation
 //adopted by UploadedListsRouter
 protocol UploadedListRouterProtocol: class {
     static func createUploadedListModule() -> UploadedListVC
+    func goToLink(link: String)
 }
 
 //adopted by DataInteractor
@@ -37,7 +38,7 @@ protocol UploadedListViewToPresenterProtocol: class {
     var view:UploadedListViewProtocol? { get set }
     //var interactor: GalleryPhotosPresenterToInteractorProtocol? {get set}
     var router: UploadedListRouterProtocol? {get set}
-    func selectItem(atIndex index: Int)
+    func goToLink(link: String)
 }
 
 

@@ -24,4 +24,8 @@ class UploadedListRouter: UploadedListRouterProtocol {
         return view
 
     }
+    func goToLink(link: String) {
+        guard let url = URL(string: link) else { return }
+        UIApplication.shared.open(url)
+    }
 }

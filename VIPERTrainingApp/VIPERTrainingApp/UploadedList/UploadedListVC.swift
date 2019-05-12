@@ -50,6 +50,13 @@ class UploadedListVC: UITableViewController {
         }
         return cellHeight
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! UrlTableViewCell
+        if let link = cell.lblUrl.text {
+            presenter?.goToLink(link: link)
+        }
+    }
 }
 
 extension UploadedListVC: UploadedListViewProtocol {
