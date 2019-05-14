@@ -17,6 +17,7 @@ class SimpleWebService {
     
     private let parameterAPIKey = "api_key"
     private let parameterPageKey = "page"
+    private var dataTasksOfPosters : [URLSessionDataTask] = []
     
     static let shared = SimpleWebService()
     private init() {
@@ -65,8 +66,15 @@ class SimpleWebService {
         task.resume()
     }
     
-    func getPosterDataForImage(withName imagePathName: String, withAftermathClosure aftermathClosure: @escaping (Bool, Data?) -> Void) {
-        let imageUrl = URL(string: baseImageUrl + imagePathName)!
+    func getPosterDataForImage(withPath imagePath: String, withAftermathClosure aftermathClosure: @escaping (Bool, Data?) -> Void) {
+        let imageUrl = URL(string: baseImageUrl + imagePath)!
+        //no reason to add many times
+        if dataTasksOfPosters.index(where: { task in
+            task.originalRequest?.url == imageUrl
+        }) != nil {
+            return
+        }
+        
         let task = URLSession.shared.dataTask(with: imageUrl) { (data, response, error) in
             var success = false
             defer {
@@ -84,6 +92,18 @@ class SimpleWebService {
             aftermathClosure(true, data)
         }
         task.resume()
+        dataTasksOfPosters.append(task)
+    }
+    
+    func cancelGettingPosterDataForImage(withPath imagePath: String) {
+        let imageUrl = URL(string: baseImageUrl + imagePath)!
+        guard let dataTaskIndex = dataTasksOfPosters.index(where: { task in
+            task.originalRequest?.url == imageUrl
+        }) else {
+            return
+        }
+        dataTasksOfPosters[dataTaskIndex].cancel()
+        dataTasksOfPosters.remove(at: dataTaskIndex)
     }
     
     func getDetailedDescription(byMovieID movieID: String, withAftermathClosure aftermathClosure: @escaping (Bool, MovieDetailed?) -> Void) {

@@ -24,6 +24,7 @@ class GeneralViewController: UIViewController {
         srchBar.delegate = self
         tblPopularMovies.delegate = self
         tblPopularMovies.dataSource = self
+        tblPopularMovies.prefetchDataSource = self
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
@@ -73,8 +74,9 @@ extension GeneralViewController: UITableViewDataSource, UITableViewDelegate {
         }
         if let imgData = popularMovie.backdropPathImageData {
             cell.imgMoviePoster.image = UIImage(data: imgData)
-        } else {            
+        } else {
             cell.imgMoviePoster.image = nil
+            viewModel.fetchPoster(forIndex: indexPath.row)
         }
         return cell
     }
@@ -101,6 +103,19 @@ extension GeneralViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
+extension GeneralViewController: UITableViewDataSourcePrefetching {
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        for indexPath in indexPaths {
+            viewModel.fetchPoster(forIndex: indexPath.row)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
+        for indexPath in indexPaths {
+            viewModel.cancelFetchingPoster(forIndex: indexPath.row)
+        }
+    }
+}
 
 extension GeneralViewController: UISearchBarDelegate {
     

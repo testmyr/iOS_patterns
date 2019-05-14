@@ -15,6 +15,8 @@ protocol GeneralViewModelProtocol {
     func numberOfMovies() -> Int
     func movieFor(rowAtIndex index: Int) -> MovieDescription
     func getNextPage()
+    func fetchPoster(forIndex index: Int)
+    func cancelFetchingPoster(forIndex index: Int)
     
     func searchFor(text: String)
     
@@ -52,14 +54,6 @@ class GeneralViewModel {
             if isSuccess && result != nil {
                 self.movies.append(contentsOf: result!)
                 self.viewDelegate?.updateView()
-                for index in self.movies.indices {
-                    if let imagePath = self.movies[index].backdrop_path {
-                        SimpleWebService.shared.getPosterDataForImage(withName: imagePath) { (success, imageData) in
-                            self.movies[index].backdropPathImageData = imageData
-                            self.viewDelegate?.updateRow(rowIndex: index)
-                        }
-                    }
-                }
             }
         }
     }
@@ -85,16 +79,23 @@ extension GeneralViewModel: GeneralViewModelProtocol {
             if isSuccess && result != nil {
                 self.movies.append(contentsOf: result!)
                 self.viewDelegate?.updateView()
-                for index in self.movies.indices {
-                    if let imagePath = self.movies[index].backdrop_path {
-                        SimpleWebService.shared.getPosterDataForImage(withName: imagePath) { (success, imageData) in
-                            self.movies[index].backdropPathImageData = imageData
-                            self.viewDelegate?.updateRow(rowIndex: index)
-                        }
-                    }
-                }
             }
             self.isPageLoading = false
+        }
+    }
+    
+    func fetchPoster(forIndex index: Int) {
+        if let imagePath = self.movies[index].backdrop_path {
+            SimpleWebService.shared.getPosterDataForImage(withPath: imagePath) { (success, imageData) in
+                self.movies[index].backdropPathImageData = imageData
+                self.viewDelegate?.updateRow(rowIndex: index)
+            }
+        }
+    }
+    
+    func cancelFetchingPoster(forIndex index: Int) {
+        if let imagePath = self.movies[index].backdrop_path {
+            SimpleWebService.shared.cancelGettingPosterDataForImage(withPath: imagePath)
         }
     }
     
