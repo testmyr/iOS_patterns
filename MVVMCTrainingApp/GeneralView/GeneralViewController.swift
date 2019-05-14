@@ -59,47 +59,6 @@ class GeneralViewController: UIViewController {
     }
 }
 
-extension GeneralViewController: UISearchBarDelegate {
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if let searchText = searchBar.text {
-            viewModel.searchFor(text: searchText)
-        }
-    }
-    
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        self.view.endEditing(false)
-    }
-}
-
-
-extension GeneralViewController: GeneralViewModelViewDelegate {
-    func updateView() {
-        if let tblVw = self.tblPopularMovies {
-            DispatchQueue.main.async {
-                tblVw.reloadData()
-            }
-        }
-    }
-    func updateRow(rowIndex: Int) {
-        DispatchQueue.main.async {
-            let indexPath = IndexPath(item: rowIndex, section: 0)
-            self.tblPopularMovies.reloadRows(at: [indexPath], with: .fade)
-        }
-    }
-    func showSpinner() {
-        LLSpinner.spin(style: .whiteLarge) {
-            self.showAlertWithMessage(message: "Be patient!", cancelled: {})
-        }
-    }
-
-    func hideSpinner() {
-        LLSpinner.stop()
-    }
-    
-}
-
 extension GeneralViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.numberOfMovies()
@@ -109,7 +68,7 @@ extension GeneralViewController: UITableViewDataSource, UITableViewDelegate {
         let popularMovie = viewModel.movieFor(rowAtIndex: indexPath.row)
         let cell = tableView.dequeueReusableCell(withIdentifier: "popularMovieCell") as! GeneralViewCell
         cell.lblMovieName.text = popularMovie.title
-        if indexPath.row > viewModel.numberOfMovies() - 10 {
+        if indexPath.row == viewModel.numberOfMovies() - 1 {
             viewModel.getNextPage()
         }
         if let imgData = popularMovie.backdropPathImageData {
@@ -140,4 +99,48 @@ extension GeneralViewController: UITableViewDataSource, UITableViewDelegate {
         }
         return cellHeight
     }
+}
+
+
+extension GeneralViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if let searchText = searchBar.text {
+            viewModel.searchFor(text: searchText)
+        }
+    }
+    
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        self.view.endEditing(false)
+    }
+}
+
+
+extension GeneralViewController: GeneralViewModelViewDelegate {
+    func updateView() {
+        if let tblVw = self.tblPopularMovies {
+            DispatchQueue.main.async {
+                tblVw.reloadData()
+            }
+        }
+    }
+    func updateRow(rowIndex: Int) {
+        DispatchQueue.main.async {
+            let indexPath = IndexPath(item: rowIndex, section: 0)
+            if self.tblPopularMovies.indexPathsForVisibleRows?.contains(indexPath) ?? false {
+                self.tblPopularMovies.reloadRows(at: [indexPath], with: .fade)
+            }
+        }
+    }
+    func showSpinner() {
+        LLSpinner.spin(style: .whiteLarge) {
+            self.showAlertWithMessage(message: "Be patient!", cancelled: {})
+        }
+    }
+
+    func hideSpinner() {
+        LLSpinner.stop()
+    }
+    
 }
