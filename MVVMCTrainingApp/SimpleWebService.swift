@@ -18,6 +18,7 @@ class SimpleWebService {
     private let parameterAPIKey = "api_key"
     private let parameterPageKey = "page"
     private var dataTasksOfPosters : [URLSessionDataTask] = []
+    private let queue = DispatchQueue(label: "Serial queue for the dataTasksOfPosters accessing")
     
     static let shared = SimpleWebService()
     private init() {
@@ -74,8 +75,8 @@ class SimpleWebService {
         }) != nil {
             return
         }
-        
-        let task = URLSession.shared.dataTask(with: imageUrl) { (data, response, error) in
+        weak var taskRef: URLSessionDataTask!
+        let task = URLSession.shared.dataTask(with: imageUrl) { [unowned self] (data, response, error) in
             var success = false
             defer {
                 if !success {
@@ -90,20 +91,30 @@ class SimpleWebService {
             }
             success = true
             aftermathClosure(true, data)
+            self.queue.sync {
+                if taskRef != nil, let indexForRemoving = self.dataTasksOfPosters.firstIndex(where: {$0 === taskRef}) {
+                    self.dataTasksOfPosters.remove(at: indexForRemoving)
+                }
+            }
         }
+        taskRef = task
         task.resume()
-        dataTasksOfPosters.append(task)
+        queue.sync {
+            dataTasksOfPosters.append(task)
+        }
     }
     
     func cancelGettingPosterDataForImage(withPath imagePath: String) {
         let imageUrl = URL(string: baseImageUrl + imagePath)!
-        guard let dataTaskIndex = dataTasksOfPosters.index(where: { task in
-            task.originalRequest?.url == imageUrl
-        }) else {
-            return
+        queue.sync {
+            guard let dataTaskIndex = dataTasksOfPosters.index(where: { task in
+                task.originalRequest?.url == imageUrl
+            }) else {
+                return
+            }
+            dataTasksOfPosters[dataTaskIndex].cancel()
+            dataTasksOfPosters.remove(at: dataTaskIndex)
         }
-        dataTasksOfPosters[dataTaskIndex].cancel()
-        dataTasksOfPosters.remove(at: dataTaskIndex)
     }
     
     func getDetailedDescription(byMovieID movieID: String, withAftermathClosure aftermathClosure: @escaping (Bool, MovieDetailed?) -> Void) {

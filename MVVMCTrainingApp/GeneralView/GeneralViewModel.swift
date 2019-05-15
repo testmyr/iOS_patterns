@@ -72,8 +72,6 @@ extension GeneralViewModel: GeneralViewModelProtocol {
             return
         }
         isPageLoading = true
-        let downloadGroup = DispatchGroup()
-        downloadGroup.enter()
         let duePageIndex = movies.count / 20 + 1
         SimpleWebService.shared.getPopularMovies(forPage: duePageIndex) { (isSuccess, result) in
             if isSuccess && result != nil {
