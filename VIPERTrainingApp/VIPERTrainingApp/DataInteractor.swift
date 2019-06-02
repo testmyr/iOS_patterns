@@ -157,12 +157,6 @@ class DataInteractor: NSObject {
     override private init() {
         super.init()
         PHPhotoLibrary.shared().register(self)
-//        NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: nil){ (notification) in
-//            self.uploadQueue.isSuspended = true
-//        }
-//        NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: nil){ (notification) in
-//            self.uploadQueue.isSuspended = false
-//        }
     }
     
     deinit {
