@@ -26,7 +26,6 @@ class SimpleWebService {
         
         let body = NSMutableData()
         body.append(NSString(format: "\r\n--%@\r\n", boundary).data(using: String.Encoding.utf8.rawValue)!)
-        body.append(NSString(format: "\r\n--%@\r\n", boundary).data(using: String.Encoding.utf8.rawValue)!)
         body.append(NSString(format:"Content-Disposition: form-data; name=\"image\"\r\n").data(using: String.Encoding.utf8.rawValue)!)
         body.append(NSString(format: "Content-Type: application/octet-stream\r\n\r\n").data(using: String.Encoding.utf8.rawValue)!)
         body.append(imageData)
