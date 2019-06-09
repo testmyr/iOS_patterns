@@ -38,7 +38,6 @@ fileprivate class UploadOperation: Operation {
         self.asset = asset
     }
     
-    public override var isAsynchronous: Bool { return true }
     open override var isReady: Bool {
         return super.isReady && state == .ready
     }
@@ -225,6 +224,7 @@ extension DataInteractor: GalleryPhotosPresenterToInteractorProtocol {
     
     func uploadAsset(_ asset: PHAsset) {
         let uploadOp = UploadOperation(asset)
+        uploadOp.qualityOfService = .userInitiated
         uploadQueue.addOperation(uploadOp)
     }
     
