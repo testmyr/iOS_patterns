@@ -104,7 +104,12 @@ fileprivate class CoreDataHelper {
     private init() {}
     static let shared = CoreDataHelper()
     
-    lazy var persistentContainer: NSPersistentContainer = {
+    lazy var viewContext: NSManagedObjectContext = self.persistentContainer.viewContext
+    var savingContext: NSManagedObjectContext {
+        return self.persistentContainer.newBackgroundContext()
+    }
+    
+    private lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "VIPERTrainingApp")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
@@ -138,7 +143,7 @@ class DataInteractor: NSObject {
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "timeStamp", ascending:false)]
         
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
-                                                    managedObjectContext: CoreDataHelper.shared.persistentContainer.viewContext,
+                                                    managedObjectContext: CoreDataHelper.shared.viewContext,
                                                     sectionNameKeyPath: nil, cacheName: nil)
         controller.delegate = self
         
@@ -229,7 +234,7 @@ extension DataInteractor: GalleryPhotosPresenterToInteractorProtocol {
     }
     
     func saveUrlItemToStorage(url: String, timeStamp: Date) {
-        let saveContext = CoreDataHelper.shared.persistentContainer.newBackgroundContext()
+        let saveContext = CoreDataHelper.shared.savingContext
         saveContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         saveContext.undoManager = nil
         
