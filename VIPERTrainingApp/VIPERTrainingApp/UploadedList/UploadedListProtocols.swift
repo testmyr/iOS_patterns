@@ -18,7 +18,7 @@ protocol UploadedListRouterProtocol: class {
 //adopted by DataInteractor
 protocol UploadedListPresenterToInteractorProtocol:class {
     var uploadedListPresenter:UploadedListInteractorToPresenterProtocol? { get set }
-    func getItem(atIndexPath indexPath: IndexPath) -> ImageUrl
+    func getItem(atIndexPath indexPath: IndexPath) -> UploadedListModel
     func numberOfItems(inSection section: Int) -> Int
     
 }
@@ -33,7 +33,7 @@ protocol UploadedListInteractorToPresenterProtocol: class {
     func endUpdates()
 }
 protocol UploadedListViewToPresenterProtocol: class {
-    func getItem(atIndexPath indexPath: IndexPath) -> ImageUrl
+    func getItem(atIndexPath indexPath: IndexPath) -> UploadedListModel
     func numberOfItems(inSection section: Int) -> Int
     var view:UploadedListViewProtocol? { get set }
     //var interactor: GalleryPhotosPresenterToInteractorProtocol? {get set}

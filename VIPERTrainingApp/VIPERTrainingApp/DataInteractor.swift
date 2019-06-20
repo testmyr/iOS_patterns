@@ -141,6 +141,7 @@ class DataInteractor: NSObject {
     lazy var fetchedResults: NSFetchedResultsController<ImageUrl> = {
         let fetchRequest = NSFetchRequest<ImageUrl>(entityName:"ImageUrl")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "timeStamp", ascending:false)]
+        fetchRequest.fetchBatchSize = 20
         
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                     managedObjectContext: CoreDataHelper.shared.viewContext,
@@ -254,8 +255,10 @@ extension DataInteractor: GalleryPhotosPresenterToInteractorProtocol {
 
 // MARK: - UploadedListPresenterToInteractorProtocol
 extension DataInteractor: UploadedListPresenterToInteractorProtocol {
-    func getItem(atIndexPath indexPath: IndexPath) -> ImageUrl {
-        return fetchedResults.object(at: indexPath)
+    func getItem(atIndexPath indexPath: IndexPath) -> UploadedListModel {
+        let url = fetchedResults.object(at: indexPath).url
+        let timeStamp = fetchedResults.object(at: indexPath).timeStamp
+        return UploadedListModel(timeStamp: timeStamp, url: url)
     }
     func numberOfItems(inSection section: Int) -> Int {
         return fetchedResults.sections?[section].numberOfObjects ?? 0

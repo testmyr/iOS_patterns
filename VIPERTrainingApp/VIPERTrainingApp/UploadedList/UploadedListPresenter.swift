@@ -39,7 +39,7 @@ extension UploadedListPresenter: UploadedListInteractorToPresenterProtocol {
 
 // MARK: - UploadedListViewToPresenterProtocol
 extension UploadedListPresenter: UploadedListViewToPresenterProtocol {
-    func getItem(atIndexPath indexPath: IndexPath) -> ImageUrl {
+    func getItem(atIndexPath indexPath: IndexPath) -> UploadedListModel {
         return interactor.getItem(atIndexPath: indexPath)
     }
     
