@@ -19,8 +19,6 @@ class DetailedViewController: UIViewController {
     @IBOutlet weak var lblOverview: UILabel!
     
     @IBOutlet weak var scrllvw: UIScrollView!
-    //used only for avoiding errors/warnings in IB
-    @IBOutlet weak var cnstrHeightIB: NSLayoutConstraint!
     
     
     var viewModel: DetailedViewModelProtocol! {
@@ -31,7 +29,6 @@ class DetailedViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        cnstrHeightIB.isActive = false
         updateView()
     }
     
