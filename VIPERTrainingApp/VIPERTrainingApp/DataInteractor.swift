@@ -23,14 +23,23 @@ fileprivate class UploadOperation: Operation {
         }
     }
     
-    private var state = State.ready {
-        willSet {
-            willChangeValue(forKey: newValue.keyPath)
-            willChangeValue(forKey: state.keyPath)
+    private let stateQueue = DispatchQueue(label: "read/write.state.operation", attributes: .concurrent)
+    private var state_ = State.ready
+    private var state: State {
+        get {
+            return stateQueue.sync(execute: {
+                state_
+            })
         }
-        didSet {
-            didChangeValue(forKey: oldValue.keyPath)
+        set {
+            let oldValue = state
+            willChangeValue(forKey: state.keyPath)
+            willChangeValue(forKey: newValue.keyPath)
+            stateQueue.sync(flags: .barrier, execute: {
+                state_ = newValue
+            })
             didChangeValue(forKey: state.keyPath)
+            didChangeValue(forKey: oldValue.keyPath)
         }
     }
     
