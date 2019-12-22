@@ -9,13 +9,21 @@
 import Foundation
 import UIKit
 
+protocol GeneralVCProtocol: AnyObject {
+    func updateView()
+    func updateRow(rowIndex: Int)
+    //spinner better rewrite as setting state by using an enum
+    func showSpinner()
+    func hideSpinner()
+}
+
 class GeneralViewController: UIViewController {
     @IBOutlet weak var tblPopularMovies: UITableView!
     @IBOutlet weak var srchBar: UISearchBar!
     
-    var viewModel: GeneralViewModelProtocol! {
+    var viewModel: GeneralViewModel! {
         didSet {
-            viewModel.viewDelegate = self
+            viewModel.view = self
         }
     }
     
@@ -69,9 +77,6 @@ extension GeneralViewController: UITableViewDataSource, UITableViewDelegate {
         let popularMovie = viewModel.movieFor(rowAtIndex: indexPath.row)
         let cell = tableView.dequeueReusableCell(withIdentifier: "popularMovieCell") as! GeneralViewCell
         cell.lblMovieName.text = popularMovie.title
-        if indexPath.row == viewModel.numberOfMovies() - 1 {
-            viewModel.getNextPage()
-        }
         if let imgData = popularMovie.backdropPathImageData {
             cell.imgMoviePoster.image = UIImage(data: imgData)
         } else {
@@ -106,15 +111,17 @@ extension GeneralViewController: UITableViewDataSource, UITableViewDelegate {
 extension GeneralViewController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
-            viewModel.fetchPoster(forIndex: indexPath.row)
+            if indexPath.row == viewModel.numberOfMovies() - 1 {
+                viewModel.getNextPage()
+            }
         }
     }
     
-    func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
-        for indexPath in indexPaths {
-            viewModel.cancelFetchingPoster(forIndex: indexPath.row)
-        }
-    }
+//    func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
+//        for indexPath in indexPaths {
+//            viewModel.cancelFetchingPoster(forIndex: indexPath.row)
+//        }
+//    }
 }
 
 extension GeneralViewController: UISearchBarDelegate {
@@ -132,7 +139,7 @@ extension GeneralViewController: UISearchBarDelegate {
 }
 
 
-extension GeneralViewController: GeneralViewModelViewDelegate {
+extension GeneralViewController: GeneralVCProtocol {
     func updateView() {
         if let tblVw = self.tblPopularMovies {
             DispatchQueue.main.async {
