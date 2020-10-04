@@ -1,0 +1,6 @@
+framework module Pods_MVPCoordinatorTrainingApp {
+  umbrella header "Pods-MVPCoordinatorTrainingApp-umbrella.h"
+
+  export *
+  module * { export * }
+}
