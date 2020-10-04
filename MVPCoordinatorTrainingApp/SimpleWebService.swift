@@ -1,6 +1,6 @@
 //
 //  SimpleWebService.swift
-//  MVVMCTrainingApp
+//  MVPCoordinatorTrainingApp
 //
 //  Created by sdk on 3/25/19.
 //  Copyright © 2019 Sdk. All rights reserved.

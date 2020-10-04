@@ -1,6 +1,6 @@
 //
-//  DetailedViewModel.swift
-//  MVVMCTrainingApp
+//  DetailedViewPresenter.swift
+//  MVPCoordinatorTrainingApp
 //
 //  Created by sdk on 3/25/19.
 //  Copyright © 2019 Sdk. All rights reserved.
@@ -8,13 +8,13 @@
 
 import Foundation
 
-class MovieInfo {
-    var movieId: String!
-    var imageData: Data?
+protocol DetailedVCProtocol: AnyObject {
+    func updateView()
+    func enableButton()
 }
 
-protocol DetailedViewModelProtocol {
-    var viewDelegate: DetailedViewModelViewDelegate? { get set }
+protocol DetailedViewPresenterProtocol {
+    var view: DetailedVCProtocol? { get set }
     
     func getGenres() -> String
     func getReleaseDate() -> String
@@ -26,21 +26,18 @@ protocol DetailedViewModelProtocol {
     func enableButton()
 }
 
-protocol DetailedViewModelViewDelegate: AnyObject {
-    func updateView()
-    func enableButton()
-}
 
-protocol DetailedViewModelCoordinatorDelegate: AnyObject {
-    func playTrailerClicked(movieId: String)
+class MovieInfo {
+    var movieId: String!
+    var imageData: Data?
 }
 
 
-class DetailedViewModel {
+class DetailedViewPresenter {
     var movieInfo: MovieInfo!
     var movieDetails: MovieDetailed?
-    weak var coordinatorDelegate: DetailedViewModelCoordinatorDelegate?
-    weak var viewDelegate: DetailedViewModelViewDelegate?
+    weak var coordinator: CoordinatorToDetailedProtocol?
+    weak var view: DetailedVCProtocol?
     
     init(movieInfo: MovieInfo) {
         self.movieInfo = movieInfo
@@ -51,13 +48,13 @@ class DetailedViewModel {
         SimpleWebService.shared.getDetailedDescription(byMovieID: movieInfo.movieId) { (isSuccess, result) in
             if isSuccess && result != nil {
                 self.movieDetails = result
-                self.viewDelegate?.updateView()
+                self.view?.updateView()
             }
         }
     }
 }
 
-extension DetailedViewModel: DetailedViewModelProtocol {
+extension DetailedViewPresenter: DetailedViewPresenterProtocol {
     func getGenres() -> String {
         return movieDetails?.genres?.joined(separator: ", ") ?? ""
     }
@@ -75,9 +72,9 @@ extension DetailedViewModel: DetailedViewModelProtocol {
     }
     
     func playTrailerClicked() {
-        coordinatorDelegate?.playTrailerClicked(movieId: self.movieInfo.movieId)
+        coordinator?.playTrailerClicked(movieId: self.movieInfo.movieId)
     }
     func enableButton() {
-        viewDelegate?.enableButton()
+        view?.enableButton()
     }
 }

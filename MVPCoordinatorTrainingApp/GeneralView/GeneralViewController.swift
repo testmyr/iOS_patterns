@@ -1,6 +1,6 @@
 //
 //  GeneralViewController.swift
-//  MVVMCTrainingApp
+//  MVPCoordinatorTrainingApp
 //
 //  Created by sdk on 3/25/19.
 //  Copyright © 2019 Sdk. All rights reserved.
@@ -9,19 +9,11 @@
 import Foundation
 import UIKit
 
-protocol GeneralVCProtocol: AnyObject {
-    func updateView()
-    func updateRow(rowIndex: Int)
-    //spinner better rewrite as setting state by using an enum
-    func showSpinner()
-    func hideSpinner()
-}
-
 class GeneralViewController: UIViewController {
     @IBOutlet weak var tblPopularMovies: UITableView!
     @IBOutlet weak var srchBar: UISearchBar!
     
-    var viewModel: GeneralViewModel! {
+    var viewModel: GeneralViewPresenterProtocol! {
         didSet {
             viewModel.view = self
         }

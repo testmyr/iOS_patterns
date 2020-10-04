@@ -1,6 +1,6 @@
 //
 //  PlayerViewController.swift
-//  MVVMCTrainingApp
+//  MVPCoordinatorTrainingApp
 //
 //  Created by sdk on 4/29/19.
 //  Copyright © 2019 Sdk. All rights reserved.

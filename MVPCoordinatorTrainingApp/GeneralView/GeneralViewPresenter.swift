@@ -1,6 +1,6 @@
 //
-//  GeneralViewModel.swift
-//  MVVMCTrainingApp
+//  GeneralViewPresenter.swift
+//  MVPCoordinatorTrainingApp
 //
 //  Created by sdk on 3/25/19.
 //  Copyright © 2019 Sdk. All rights reserved.
@@ -9,13 +9,27 @@
 import Foundation
 import UIKit
 
-protocol GeneralViewModelCoordinatorDelegate: AnyObject {
+protocol GeneralVCProtocol: AnyObject {
+    func updateView()
+    func updateRow(rowIndex: Int)
+    //spinner better rewrite as setting state by using an enum
+    func showSpinner()
+    func hideSpinner()
+}
+
+protocol GeneralViewPresenterProtocol {
+    var view: GeneralVCProtocol? { get set }
+    func numberOfMovies() -> Int
+    func movieFor(rowAtIndex index: Int) -> MovieDescription
+    func getNextPage()
+    func fetchPoster(forIndex index: Int)
+    func cancelFetchingPoster(forIndex index: Int)
+    func searchFor(text: String)
     func didSelectRow(_ row: Int)
 }
 
-
-class GeneralViewModel {
-    weak var coordinatorDelegate: GeneralViewModelCoordinatorDelegate?
+class GeneralViewPresenter {
+    weak var coordinator: CoordinatorToGeneralProtocol?
     weak var view: GeneralVCProtocol?
     
     private(set) var selectedMovie: MovieInfo?
@@ -35,7 +49,9 @@ class GeneralViewModel {
             }
         }
     }
-    
+}
+
+extension GeneralViewPresenter: GeneralViewPresenterProtocol {
     func numberOfMovies() -> Int {
         return showedMovies == nil ? movies.count : showedMovies!.count
     }
@@ -88,6 +104,6 @@ class GeneralViewModel {
         selectedMovie = MovieInfo()
         selectedMovie?.movieId = String(moviesList[row].id)
         selectedMovie?.imageData = moviesList[row].backdropPathImageData
-        coordinatorDelegate?.didSelectRow(row)
+        coordinator?.didSelectRow(row)
     }
 }

@@ -1,6 +1,6 @@
 //
 //  DetailedViewController.swift
-//  MVVMCTrainingApp
+//  MVPCoordinatorTrainingApp
 //
 //  Created by sdk on 3/25/19.
 //  Copyright © 2019 Sdk. All rights reserved.
@@ -21,9 +21,9 @@ class DetailedViewController: UIViewController {
     @IBOutlet weak var scrllvw: UIScrollView!
     
     
-    var viewModel: DetailedViewModelProtocol! {
+    var viewModel: DetailedViewPresenterProtocol! {
         didSet {
-            viewModel.viewDelegate = self
+            viewModel.view = self
         }
     }
     
@@ -43,7 +43,7 @@ class DetailedViewController: UIViewController {
     
 }
 
-extension DetailedViewController: DetailedViewModelViewDelegate {
+extension DetailedViewController: DetailedVCProtocol {
     func enableButton() {
         bntWatchTrailer.isUserInteractionEnabled = true
     }
