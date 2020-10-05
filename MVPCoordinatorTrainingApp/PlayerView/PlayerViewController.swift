@@ -11,29 +11,29 @@ import UIKit
 import youtube_ios_player_helper
 
 class PlayerViewController: UIViewController {
-    @IBOutlet weak var plrVw: YTPlayerView!
+    @IBOutlet weak var vwPlayer: YTPlayerView!
     
     
-    var viewModel: PlayerViewModelProtocol! {
+    var viewPresenter: PlayerViewPresenterProtocol! {
         didSet {
-            viewModel.viewDelegate = self
+            viewPresenter.view = self
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let youtubeID = viewModel.getYoutubeId() {
-            plrVw.load(withVideoId: youtubeID)
-            plrVw.playVideo()
+        if let youtubeID = viewPresenter.getYoutubeId() {
+            vwPlayer.load(withVideoId: youtubeID)
+            vwPlayer.playVideo()
         }
     }
 }
 
-extension PlayerViewController: PlayerViewModelViewDelegate {
+extension PlayerViewController: PlayerViewProtocol {
     func loadPlayer() {
-        if plrVw != nil, let youtubeID = viewModel.getYoutubeId() {
-            plrVw.load(withVideoId: youtubeID)
-            plrVw.playVideo()
+        if vwPlayer != nil, let youtubeID = viewPresenter.getYoutubeId() {
+            vwPlayer.load(withVideoId: youtubeID)
+            vwPlayer.playVideo()
         }
     }
 }

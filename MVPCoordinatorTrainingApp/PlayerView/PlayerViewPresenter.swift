@@ -1,5 +1,5 @@
 //
-//  PlayerViewModel.swift
+//  PlayerViewPresenter.swift
 //  MVPCoordinatorTrainingApp
 //
 //  Created by sdk on 4/29/19.
@@ -8,10 +8,19 @@
 
 import Foundation
 
-class PlayerViewModel {
+protocol PlayerViewProtocol: AnyObject {
+    func loadPlayer()
+}
+
+protocol PlayerViewPresenterProtocol {
+    var view: PlayerViewProtocol? { get set }
+    func getYoutubeId() -> String?
+}
+
+class PlayerViewPresenter {
     private var movieId: String?
     private var youtubeID: String?
-    weak var viewDelegate: PlayerViewModelViewDelegate?
+    weak var view: PlayerViewProtocol?
     
     init(movieId: String, afterMathClosure: @escaping () -> Void) {
         self.movieId = movieId
@@ -30,18 +39,8 @@ class PlayerViewModel {
     }
 }
 
-extension PlayerViewModel: PlayerViewModelProtocol {
+extension PlayerViewPresenter: PlayerViewPresenterProtocol {
     func getYoutubeId() -> String? {
         return youtubeID
     }
-}
-
-protocol PlayerViewModelProtocol {
-    var viewDelegate: PlayerViewModelViewDelegate? { get set }
-    func getYoutubeId() -> String?
-}
-
-
-protocol PlayerViewModelViewDelegate: AnyObject {
-    func loadPlayer()
 }

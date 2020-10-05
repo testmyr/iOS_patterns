@@ -27,13 +27,13 @@ class Coordinator {
     
     lazy var rootNavigationController: UINavigationController = {
         let popularMoviesVC: GeneralViewController = storyboard.instantiateViewController(withIdentifier: "GeneralViewController") as! GeneralViewController
-        popularMoviesVC.viewModel = popularMoviesViewModel
+        popularMoviesVC.viewPresenter = popularMoviesViewPresenter
         return UINavigationController(rootViewController: popularMoviesVC)
     }()
-    lazy var popularMoviesViewModel: GeneralViewPresenter = {
-        let viewModel = GeneralViewPresenter()
-        viewModel.coordinator = self
-        return viewModel
+    lazy var popularMoviesViewPresenter: GeneralViewPresenter = {
+        let viewPresenter = GeneralViewPresenter()
+        viewPresenter.coordinator = self
+        return viewPresenter
     }()
     weak var detailedVP: DetailedVPToCordinator?
     
@@ -53,11 +53,11 @@ class Coordinator {
 
 extension Coordinator: CoordinatorToGeneralProtocol {
     func didSelectRow(_ row: Int) {
-        if let selectedMovie = popularMoviesViewModel.selectedMovie {
+        if let selectedMovie = popularMoviesViewPresenter.selectedMovie {
             if let detailedVC = storyboard.instantiateViewController(withIdentifier: "DetailedViewController") as? DetailedViewController {
                 let detailedVP = DetailedViewPresenter(movieInfo: selectedMovie)
                 detailedVP.coordinator = self
-                detailedVC.viewModel = detailedVP
+                detailedVC.viewPresenter = detailedVP
                 detailedVC.title = "Movie Detail"
                 self.rootNavigationController.pushViewController(detailedVC, animated: true)
             }
@@ -70,14 +70,14 @@ extension Coordinator: CoordinatorToDetailedProtocol {
     func playTrailerClicked(movieId: String) {
         if let playerVC = self.storyboard.instantiateViewController(withIdentifier: "PlayerViewController") as? PlayerViewController {
             playerVC.title = "Trailer"
-            let playerViewModel = PlayerViewModel(movieId: movieId) { [unowned self] in
+            let playerViewPresenter = PlayerViewPresenter(movieId: movieId) { [unowned self] in
                 DispatchQueue.main.async {
                     self.rootNavigationController.pushViewController(playerVC, animated: true)
                     self.detailedVP?.enableButton()
                     assert(self.detailedVP == nil)
                 }
             }
-            playerVC.viewModel = playerViewModel
+            playerVC.viewPresenter = playerViewPresenter
         }
     }
 }

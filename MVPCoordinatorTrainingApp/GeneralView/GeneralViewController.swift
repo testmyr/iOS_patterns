@@ -13,9 +13,9 @@ class GeneralViewController: UIViewController {
     @IBOutlet weak var tblPopularMovies: UITableView!
     @IBOutlet weak var srchBar: UISearchBar!
     
-    var viewModel: GeneralViewPresenterProtocol! {
+    var viewPresenter: GeneralViewPresenterProtocol! {
         didSet {
-            viewModel.view = self
+            viewPresenter.view = self
         }
     }
     
@@ -62,24 +62,24 @@ class GeneralViewController: UIViewController {
 
 extension GeneralViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.numberOfMovies()
+        return viewPresenter.numberOfMovies()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let popularMovie = viewModel.movieFor(rowAtIndex: indexPath.row)
+        let popularMovie = viewPresenter.movieFor(rowAtIndex: indexPath.row)
         let cell = tableView.dequeueReusableCell(withIdentifier: "popularMovieCell") as! GeneralViewCell
         cell.lblMovieName.text = popularMovie.title
         if let imgData = popularMovie.backdropPathImageData {
             cell.imgMoviePoster.image = UIImage(data: imgData)
         } else {
             cell.imgMoviePoster.image = nil
-            viewModel.fetchPoster(forIndex: indexPath.row)
+            viewPresenter.fetchPoster(forIndex: indexPath.row)
         }
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewModel.didSelectRow(indexPath.row)
+        viewPresenter.didSelectRow(indexPath.row)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -103,15 +103,15 @@ extension GeneralViewController: UITableViewDataSource, UITableViewDelegate {
 extension GeneralViewController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
-            if indexPath.row == viewModel.numberOfMovies() - 1 {
-                viewModel.getNextPage()
+            if indexPath.row == viewPresenter.numberOfMovies() - 1 {
+                viewPresenter.getNextPage()
             }
         }
     }
     
 //    func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
 //        for indexPath in indexPaths {
-//            viewModel.cancelFetchingPoster(forIndex: indexPath.row)
+//            viewPresenter.cancelFetchingPoster(forIndex: indexPath.row)
 //        }
 //    }
 }
@@ -120,7 +120,7 @@ extension GeneralViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if let searchText = searchBar.text {
-            viewModel.searchFor(text: searchText)
+            viewPresenter.searchFor(text: searchText)
         }
     }
     

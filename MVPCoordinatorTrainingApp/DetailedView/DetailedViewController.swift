@@ -21,9 +21,9 @@ class DetailedViewController: UIViewController {
     @IBOutlet weak var scrllvw: UIScrollView!
     
     
-    var viewModel: DetailedViewPresenterProtocol! {
+    var viewPresenter: DetailedViewPresenterProtocol! {
         didSet {
-            viewModel.view = self
+            viewPresenter.view = self
         }
     }
     
@@ -37,7 +37,7 @@ class DetailedViewController: UIViewController {
     }
     
     @IBAction func btnWatchTrailerClicked(_ sender: Any) {
-        viewModel.playTrailerClicked()
+        viewPresenter.playTrailerClicked()
         bntWatchTrailer.isUserInteractionEnabled = false
     }
     
@@ -49,13 +49,13 @@ extension DetailedViewController: DetailedVCProtocol {
     }
     func updateView() {
         DispatchQueue.main.async {
-            if let imgData = self.viewModel.getImageData() {
+            if let imgData = self.viewPresenter.getImageData() {
                 self.imgPoster.image = UIImage(data: imgData)
             }
-            self.lblTitle.text = self.viewModel.getTitle()
-            self.lblGenres.text = self.viewModel.getGenres()
-            self.lblDate.text = self.viewModel.getReleaseDate()
-            self.lblOverview.text = self.viewModel.getOverview()
+            self.lblTitle.text = self.viewPresenter.getTitle()
+            self.lblGenres.text = self.viewPresenter.getGenres()
+            self.lblDate.text = self.viewPresenter.getReleaseDate()
+            self.lblOverview.text = self.viewPresenter.getOverview()
         }
     }
 }
